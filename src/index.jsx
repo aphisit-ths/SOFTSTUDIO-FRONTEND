@@ -5,11 +5,11 @@ import App from "./App";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 // pages ----->
-import IndexPage from "./pages/indexpage";
-import RegisterPage from "./pages/registerpage";
-import ProfilePage from "./pages/profilepage";
-import ContentPage from "./pages/contentpage";
-import LoginPage from "./pages/loginpage";
+import IndexPage from "./pages/indexpage/indexpage";
+import RegisterPage from "./pages/registerpage/registerpage";
+import ProfilePage from "./pages/profilepage/profilepage";
+import ContentPage from "./pages/contentpage/contentpage";
+import LoginPage from "./pages/loginpage/loginpage";
 import NavBar from "./components/navbar";
 // pages ----->
 const rootElement = document.getElementById("root");

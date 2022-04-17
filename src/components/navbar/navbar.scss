@@ -1,25 +1,39 @@
 .navbar-root {
-    width: 100vw;
+    * {
+        text-decoration: none;
+    }
+    width: 90%;
     height: 80px;
-    background: #f5f5f5;
     display: flex;
     justify-content: space-between;
     align-items: center;
     overflow: hidden;
-    padding-left: 20px;
-    a .icon {
+    padding-left: 50px;
+    align-self: center;
+    .icon {
         width: 200px;
+        cursor: pointer;
     }
     .elements {
         display: flex;
         gap: 50px;
         font-size: 18px;
         margin-right: 60px;
+        .login-btn {
+            cursor: pointer;
+        }
+        .login-btn:hover {
+            cursor: pointer;
+            color: #757575;
+        }
         .register-btn {
             background: #ffa438;
             padding: 2px 20px;
             border-radius: 15px;
             cursor: pointer;
+        }
+        .register-btn:hover {
+            background: #ffc379;
         }
     }
 }
