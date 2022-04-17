@@ -10,16 +10,19 @@ import RegisterPage from "./pages/registerpage";
 import ProfilePage from "./pages/profilepage";
 import ContentPage from "./pages/contentpage";
 import LoginPage from "./pages/loginpage";
+import NavBar from "./components/navbar";
 // pages ----->
 const rootElement = document.getElementById("root");
 ReactDOM.render(
   <BrowserRouter>
     <AnimatePresence>
+      <NavBar />
       <Routes>
         <Route path="/" element={<IndexPage />} />{" "}
         <Route path="/register" element={<RegisterPage />} />{" "}
         <Route path="/login" element={<LoginPage />} />{" "}
         <Route path="/content" element={<ContentPage />} />{" "}
+        <Route path="/profile" element={<ProfilePage />} />{" "}
       </Routes>{" "}
     </AnimatePresence>
   </BrowserRouter>,
