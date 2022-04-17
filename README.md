@@ -7,7 +7,7 @@
 1. develop with reactjs for client side , asp.net (MVC) server side
 2. styling with scss , css , framer-motion(some effect)
 
-## for developper
+## FOR DEVOLOPERS
 
 1. /pages
 
@@ -21,3 +21,7 @@
 3. /index.jsx
 
    > สำหรับการทำ Routing
+
+## ASSOCIATE
+
+[BACKEND REPOSITORY](https://github.com/Cherpomm/SoftStudio-backend/tree/Por)
