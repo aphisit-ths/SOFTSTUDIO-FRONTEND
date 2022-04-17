@@ -4,11 +4,6 @@ import "./navbar.scss";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 function NavBar() {
-  let navigator = useNavigate;
-  let location = useLocation;
-
-  //route to login page
-
   return (
     <div className="navbar-root">
       <Link to={"/"} className="icon">
