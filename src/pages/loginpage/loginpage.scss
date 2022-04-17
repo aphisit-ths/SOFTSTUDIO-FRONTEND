@@ -1,0 +1,69 @@
+@import "../../global.scss";
+.loginpage-root {
+    * {
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $white-bg;
+    .section {
+        background-color: #ffff;
+        height: auto;
+        min-height: 50vh;
+        max-height: 100vh;
+        width: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2em;
+        flex-direction: column;
+        border-radius: $big-cruve;
+        padding: 1em 2em;
+        p {
+            cursor: pointer;
+            span {
+                font-weight: 800;
+            }
+        }
+        button {
+            padding: 3% 7%;
+            border-radius: $small-cruve;
+            background: $orange;
+            outline: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            align-self: center;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #9c9c9c;
+        }
+        .field {
+            width: 60%;
+            input {
+                width: 90%;
+                height: 30px;
+                border-radius: $small-cruve;
+                padding: 2% 10%;
+                border: 0;
+                background: #e5e5e5;
+                outline: none;
+            }
+            input::placeholder {
+                color: $fontGray;
+            }
+            input:focus {
+                border: #e5e5e5;
+                outline: none;
+            }
+        }
+    }
+}
