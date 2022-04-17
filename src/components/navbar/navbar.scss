@@ -1,0 +1,25 @@
+.navbar-root {
+    width: 100vw;
+    height: 80px;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    padding-left: 20px;
+    a .icon {
+        width: 200px;
+    }
+    .elements {
+        display: flex;
+        gap: 50px;
+        font-size: 18px;
+        margin-right: 60px;
+        .register-btn {
+            background: #ffa438;
+            padding: 2px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+    }
+}
