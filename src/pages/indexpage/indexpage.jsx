@@ -1,7 +1,6 @@
 import React from "react";
 import "./index.scss";
 import Content from "./content";
-import { Link } from "react-router-dom";
 function IndexPage() {
   const data = require("../../database/mockup.json");
   const contents = data.map((data, i) => <Content key={i} data={data} />);

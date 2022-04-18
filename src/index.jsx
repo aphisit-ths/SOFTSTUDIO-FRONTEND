@@ -30,8 +30,8 @@ ReactDOM.render(
           <Route path="/" element={<IndexPage />} />{" "}
           <Route path="/register" element={<RegisterPage />} />{" "}
           <Route path="/login" element={<LoginPage />} />{" "}
-          <Route path="/content" element={<ContentPage />} />{" "}
-          <Route path="/profile" element={<ProfilePage />} />{" "}
+          <Route path="/content/:id" element={<ContentPage />} />{" "}
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/overview" element={<OverviewPage />} />{" "}
           <Route path="/manageusers" element={<ManageUsersPage />} />{" "}
           <Route path="/managecontent" element={<ManageContentPage />} />{" "}

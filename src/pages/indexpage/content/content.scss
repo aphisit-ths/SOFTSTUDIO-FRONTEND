@@ -2,21 +2,29 @@
 .content-root {
     display: flex;
     width: 60%;
-    height: 60%;
+    height: 80%;
     flex-direction: row;
     gap: 10px;
     justify-content: center;
     align-items: center;
     .image-section {
         width: 40%;
-        height: auto;
+        height: 50%;
         border-radius: 50px;
         overflow: hidden;
         img {
             width: 100%;
-            height: auto;
+            height: 100%;
             object-fit: contain;
         }
+    }
+    h1 {
+        font-size: 32px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    h1:hover {
+        color: $yellow;
     }
     .info-section {
         width: 60%;
@@ -89,15 +97,15 @@
             }
         }
         .button:nth-child(1) {
-            background: $yellow;
+            background: #b4b4b4;
         }
         .button:nth-child(2) {
-            background: #454545;
+            background: #b4b4b4;
         }
         .button:nth-child(3) {
-            background: $fontGray;
+            background: $yellow;
         }
-        .button:hover {
+        .button:nth-child(3):hover {
             background: $orange;
         }
     }
