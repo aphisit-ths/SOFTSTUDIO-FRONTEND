@@ -9,7 +9,7 @@ function Content({ data, i }) {
 
   return (
     <div keys={i} className="content-root">
-      <div className="image-section">
+      <div onClick={() => navigate("content/" + id)} className="image-section">
         <img src={img_url[0]} alt={img_url[0]} className="img" />
       </div>
       <div className="info-section">

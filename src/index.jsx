@@ -24,7 +24,6 @@ const rootElement = document.getElementById("root");
 ReactDOM.render(
   <BrowserRouter>
     <AnimatePresence>
-      {/* <NavBar /> */}
       <App>
         <Routes>
           <Route path="/" element={<IndexPage />} />{" "}

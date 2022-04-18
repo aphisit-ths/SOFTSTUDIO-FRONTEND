@@ -1,0 +1,99 @@
+@import "../../global.scss";
+.contentpage-root {
+    width: 100vw;
+    height: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #f4f4f4;
+    padding: 2em 5em;
+    gap: 2em;
+    .middle-section {
+        display: flex;
+        width: 60%;
+        min-height: 600px;
+        background-color: #ffff;
+        border-radius: $big-curve;
+        gap: 2em;
+        padding: 2em 2em;
+        .images-section {
+            width: 40%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1em;
+            .one-image {
+                width: 100%;
+                height: 600px;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: $big-curve;
+                }
+            }
+            .images {
+                width: 100%;
+                height: 50%;
+                display: flex;
+                justify-content: center;
+                img {
+                    width: 100%;
+                    height: auto;
+                    object-fit: cover;
+                    border-radius: $big-curve;
+                }
+            }
+        }
+        .body-section {
+            display: flex;
+            width: 60%;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+            .body {
+                font-size: 20px;
+                color: #777777;
+            }
+            .top-section {
+                width: 100%;
+                .tags {
+                    color: $fontGray;
+                    font-size: 20px;
+                }
+                .name {
+                    color: #000;
+                    font-size: 32px;
+                    font-weight: 600;
+                }
+                .location {
+                    color: #a1a1a1;
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+    .like-section {
+        width: 60%;
+        height: auto;
+        display: flex;
+        .like {
+            cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            gap: 10px;
+            font-size: 32px;
+            font-weight: 600;
+            text-align: center;
+            background: $yellow;
+            color: white;
+            border-radius: $small-curve;
+        }
+    }
+}
