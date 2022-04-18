@@ -1,11 +1,18 @@
-import React from "react";
+import React , { useMemo} from "react";
 import Icon from "./icon";
 import "./navbar.scss";
-import { Link } from "react-router-dom";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function NavBar() {
+
+  const location = useLocation();
+  const path = useMemo(() => {
+    return location.pathname
+  })
+
   return (
-    <div className="navbar-root">
+    <>
+    { (!path.includes("/overview") && !path.includes("/manageusers") && !path.includes("/managecontent") )? <div className="navbar-root" >      
       <Link to={"/"} className="icon">
         <Icon width="150" height="200"></Icon>
       </Link>
@@ -17,7 +24,8 @@ function NavBar() {
           ลงทะเบียน
         </Link>
       </div>
-    </div>
+    </div>: "" }
+    </>
   );
 }
 
