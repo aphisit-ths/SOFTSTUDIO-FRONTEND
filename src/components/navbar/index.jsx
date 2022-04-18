@@ -14,7 +14,7 @@ function NavBar() {
           <p className="login-btn">เข้าสู่ระบบ</p>
         </Link>
         <Link to={"register"} className="register-btn">
-          <p className="register-btn">ลงทะเบียน</p>
+          ลงทะเบียน
         </Link>
       </div>
     </div>

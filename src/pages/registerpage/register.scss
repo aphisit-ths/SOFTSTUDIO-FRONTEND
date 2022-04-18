@@ -1,5 +1,5 @@
 @import "../../global.scss";
-.loginpage-root {
+.registerpage-root {
     * {
         a {
             text-decoration: none;
@@ -27,7 +27,6 @@
         border-radius: $big-curve;
         padding: 1em 2em;
         p {
-            cursor: pointer;
             span {
                 font-weight: 800;
             }

@@ -1,8 +1,12 @@
-import logo from "./logo.svg";
 import "./App.scss";
-
-function App() {
-  return <div className="App"></div>;
+import NavBar from "./components/navbar/index";
+function App({ children }) {
+  return (
+    <div className="App">
+      <NavBar />
+      {children}
+    </div>
+  );
 }
 
 export default App;
