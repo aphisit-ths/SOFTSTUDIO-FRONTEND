@@ -1,7 +1,9 @@
 import React from "react";
 import "./contentpage.scss";
 import { AiFillHeart } from "react-icons/ai";
+import { FaShare } from "react-icons/fa";
 import { useParams } from "react-router-dom";
+import Comment from "./comment/comment";
 function ContentPage() {
   const params = useParams();
   const { id } = params;
@@ -12,6 +14,9 @@ function ContentPage() {
     <div key={idx} className={count_img ? "one-image" : "images"}>
       <img src={img_url} alt={img_url} />
     </div>
+  ));
+  const comment_elements = comments.map((comments, i) => (
+    <Comment comment={comments} i></Comment>
   ));
   return (
     <div className="contentpage-root">
@@ -31,10 +36,15 @@ function ContentPage() {
       </div>
       <div className="like-section">
         <div className="like">
-          <AiFillHeart style={{ fontSize: 50 }} />
+          <AiFillHeart style={{ fontSize: 28 }} />
           {like}
         </div>
+        <div className="like">
+          แชร์
+          <FaShare style={{ fontSize: 28 }} />
+        </div>
       </div>
+      <div className="comment-section">{comment_elements}</div>
     </div>
   );
 }

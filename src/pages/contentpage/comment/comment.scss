@@ -1,0 +1,59 @@
+@import "../../../global.scss";
+.comment-root {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background: #ffff;
+    gap: 1em;
+    min-height: 170px;
+    max-height: auto;
+    padding: 1em 1em;
+    border-radius: $small-curve;
+    .score-section {
+        display: flex;
+        flex-direction: column;
+        width: 7%;
+        height: 100%;
+        justify-content: space-evenly;
+        align-items: center;
+        background: $lYellow;
+        border-radius: $small-curve;
+        align-self: center;
+        .interact-btn {
+            font-weight: 500;
+            font-size: 32px;
+            color: $yellow;
+            cursor: pointer;
+        }
+        .score {
+            font-size: 25px;
+            font-weight: 600;
+            color: $orange;
+        }
+    }
+    .info-section {
+        display: flex;
+        flex-direction: column;
+        width: 95%;
+        height: 100%;
+        gap: 10px;
+        .info-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            height: 20%;
+            .owner-name {
+                font-weight: 600;
+                font-size: 20px;
+            }
+        }
+        .info-body {
+            width: 95%;
+            height: auto;
+            .detail {
+                color: $fontGray;
+                font-size: 16px;
+            }
+        }
+    }
+}

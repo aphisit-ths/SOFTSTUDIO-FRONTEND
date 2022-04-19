@@ -5,8 +5,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 function Content({ data, i }) {
   const navigate = useNavigate();
   const { title, like, comments, body, img_url, id } = data;
-  //navigate to content/id
-
   return (
     <div keys={i} className="content-root">
       <div onClick={() => navigate("content/" + id)} className="image-section">
@@ -28,7 +26,7 @@ function Content({ data, i }) {
             <AiOutlineComment
               style={{ color: "#f8f8f8", fill: "white", fontSize: 50 }}
             />
-            <p>{comments}</p>
+            <p>{comments.length}</p>
           </div>
           <div onClick={() => navigate("content/" + id)} className="button">
             <p>อ่านต่อ...</p>
