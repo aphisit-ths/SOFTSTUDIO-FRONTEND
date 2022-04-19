@@ -8,16 +8,19 @@ function ContentPage() {
   const params = useParams();
   const { id } = params;
   const data = require("../../database/mockup.json");
-  const { title, like, comments, body, img_url, tags, location } = data[id - 1];
+  const { title, comments, body, img_url, tags, location } = data[id - 1];
   const count_img = img_url.length === 1;
+
   const preview_image = img_url.map((img_url, idx) => (
     <div key={idx} className={count_img ? "one-image" : "images"}>
       <img src={img_url} alt={img_url} />
     </div>
   ));
-  const comment_elements = comments.map((comments, i) => (
-    <Comment comment={comments} i></Comment>
+  const like = Math.floor(Math.random() * 100);
+  const comment_elements = comments.map((comments, i, rand) => (
+    <Comment comment={comments} idx={i} rand={rand}></Comment>
   ));
+
   return (
     <div className="contentpage-root">
       <div className="middle-section">

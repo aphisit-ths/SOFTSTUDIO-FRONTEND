@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import "./content.scss";
 import { AiFillHeart, AiOutlineComment } from "react-icons/ai";
 import { useNavigate, useLocation } from "react-router-dom";
 function Content({ data, i }) {
   const navigate = useNavigate();
-  const { title, like, comments, body, img_url, id } = data;
+  const { title, comments, body, img_url, id } = data;
+  const like = Math.floor(Math.random() * 100);
+  const [likeToggle, setLikeToggle] = useState(false);
+  let [likeScore, setLikeScore] = useState(like);
+
+  function likedContent() {
+    if (!likeToggle) {
+      setLikeToggle(!likeToggle);
+      setLikeScore(likeScore + 1);
+    } else {
+      setLikeToggle(!likeToggle);
+      setLikeScore(likeScore - 1);
+    }
+  }
   return (
     <div keys={i} className="content-root">
       <div onClick={() => navigate("content/" + id)} className="image-section">
@@ -18,9 +31,18 @@ function Content({ data, i }) {
           <p className="body"> {body}</p>
         </div>
         <div className="interaction">
-          <div className="button">
-            <AiFillHeart style={{ color: "#f8f8f8", fontSize: 50 }} />
-            <p>{like}</p>
+          <div
+            onClick={likedContent}
+            className={`button${likeToggle ? "onclick" : ""}`}
+          >
+            <AiFillHeart
+              style={
+                !likeToggle
+                  ? { color: "#f8f8f8", fontSize: 50 }
+                  : { color: "#f8f8f8", fontSize: 50 }
+              }
+            />
+            <p>{likeScore}</p>
           </div>
           <div className="button">
             <AiOutlineComment
@@ -29,7 +51,8 @@ function Content({ data, i }) {
             <p>{comments.length}</p>
           </div>
           <div onClick={() => navigate("content/" + id)} className="button">
-            <p>อ่านต่อ...</p>
+            <p>อ่านต่อ</p>
+            <p>....</p>
           </div>
         </div>
       </div>

@@ -88,17 +88,27 @@
             justify-content: center;
             align-items: center;
             padding: 0.1rem 0.6rem;
-            gap: 10px;
-            font-size: 28px;
+            gap: 5px;
+            font-size: 25px;
             font-weight: 400;
             text-align: center;
-            background: $yellow;
-            color: white;
             border-radius: $small-curve;
         }
-        .like:nth-child(2) {
-            background: #c2c2c2;
+        .like:nth-child(1) {
+            background: $yellow;
             color: white;
+        }
+        .like:nth-child(1):hover {
+            background: $orange;
+            color: white;
+        }
+        .like:nth-child(2) {
+            background: #dadada;
+            color: #383838;
+        }
+        .like:nth-child(2):hover {
+            background: #707070;
+            color: #ffffff;
         }
     }
     .comment-section {
