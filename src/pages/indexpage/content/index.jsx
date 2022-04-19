@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import "./content.scss";
 import { AiFillHeart, AiOutlineComment } from "react-icons/ai";
 import { useNavigate, useLocation } from "react-router-dom";
-function Content({ data, i }) {
+import { motion } from "framer-motion";
+function Content({ data, idx }) {
   const navigate = useNavigate();
   const { title, comments, body, img_url, id } = data;
   const like = Math.floor(Math.random() * 100);
@@ -19,7 +20,14 @@ function Content({ data, i }) {
     }
   }
   return (
-    <div keys={i} className="content-root">
+    <motion.div
+      initial={{ opacity: 0, y: 200 }}
+      animate={{ opacity: 1, y: 1 }}
+      transition={{ ease: "easeInOut", duration: idx * 0.7 }}
+      exit={{ x: 600 }}
+      key={idx}
+      className="content-root"
+    >
       <div onClick={() => navigate("content/" + id)} className="image-section">
         <img src={img_url[0]} alt={img_url[0]} className="img" />
       </div>
@@ -56,7 +64,7 @@ function Content({ data, i }) {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

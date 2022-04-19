@@ -6,11 +6,11 @@ import { motion } from "framer-motion";
 function LoginPage() {
   return (
     <motion.div
-      animate="slideToLeft"
-      variants={motionVariants}
+      initial={{ opacity: 0, x: -100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ x: 600 }}
+      transition={{ ease: "easeInOut", duration: 0.5 }}
       className="loginpage-root"
-      transition={{ duration: 0.5, ease: "easeIn" }}
-      exit={{ opacity: 0 }}
     >
       <form className="section">
         <h1>เข้าสู่ระบบ</h1>

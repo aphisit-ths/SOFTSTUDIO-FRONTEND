@@ -4,6 +4,7 @@ import { AiFillHeart } from "react-icons/ai";
 import { FaShare } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import Comment from "./comment/comment";
+import { motion } from "framer-motion";
 function ContentPage() {
   const params = useParams();
   const { id } = params;
@@ -23,7 +24,13 @@ function ContentPage() {
 
   return (
     <div className="contentpage-root">
-      <div className="middle-section">
+      <motion.div
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ ease: "easeInOut", duration: 0.5 }}
+        className="middle-section"
+      >
         <div className="images-section">{preview_image}</div>
         <div className="body-section">
           <div className="top-section">
@@ -36,7 +43,7 @@ function ContentPage() {
           </div>
           <p className="body">{body}</p>
         </div>
-      </div>
+      </motion.div>
       <div className="like-section">
         <div className="like">
           <AiFillHeart style={{ fontSize: 28 }} />
@@ -47,7 +54,16 @@ function ContentPage() {
           <FaShare style={{ fontSize: 28 }} />
         </div>
       </div>
-      <div className="comment-section">{comment_elements}</div>
+      <div className="comment-section">
+        {comment_elements}
+        <div className="addcomment-section">
+          <textarea placeholder="โปรดใช้ถ้อยคำที่สุภาพ" />
+          <div id="comment" className="textarea-interaction">
+            <p className="comfirm">ส่ง</p>
+            <p className="cancle">ยกเลิก</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

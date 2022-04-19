@@ -6,9 +6,10 @@ import { motion } from "framer-motion";
 function RegisterPage() {
   return (
     <motion.div
-      animate="slideToRight"
-      variants={motionVariants}
-      transition={{ duration: 1.5, ease: "easeIn" }}
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ ease: "easeInOut", duration: 0.5 }}
       className="registerpage-root"
     >
       <form className="section">

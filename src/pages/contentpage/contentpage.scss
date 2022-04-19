@@ -117,5 +117,50 @@
         display: flex;
         flex-direction: column;
         gap: 1em;
+        .addcomment-section {
+            width: 100%;
+            min-height: 200px;
+            display: flex;
+            flex-direction: row;
+            background: #ffff;
+            padding: 2em 6em;
+            border-radius: $small-curve;
+            textarea {
+                width: 80%;
+                min-height: 200px;
+                padding: 1em 2em;
+                outline: none;
+                border: dashed 1px $fontGray;
+                border-radius: $small-curve;
+                font-size: 20px;
+            }
+            .textarea-interaction {
+                display: flex;
+                flex-direction: column;
+                width: 20%;
+                .comfirm {
+                    align-self: center;
+                    width: 90%;
+                    background: $orange;
+                    padding: 0.5em 2em;
+                    font-size: 20px;
+                    border-radius: $small-curve;
+                    font-weight: 500;
+                    color: white;
+                    cursor: pointer;
+                    text-align: center;
+                }
+                .cancle {
+                    text-align: center;
+                    align-self: center;
+                    width: 90%;
+                    padding: 0.5em 2em;
+                    font-size: 20px;
+                    font-weight: 400;
+                    color: $fontGray;
+                    cursor: pointer;
+                }
+            }
+        }
     }
 }

@@ -6,12 +6,14 @@ import { motion } from "framer-motion";
 function IndexPage() {
   const data = require("../../database/mockup.json");
 
-  const contents = data.map((data, i) => <Content key={i} data={data} />);
+  const contents = data.map((data, i) => <Content data={data} idx={i} />);
 
   return (
     <motion.div
-      animate={{ opacity: [0, 1] }}
-      transition={{ duration: 1.5, ease: "easeIn" }}
+      initial={{ opacity: 0, x: -100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ x: 600 }}
+      transition={{ ease: "easeInOut", duration: 0.5 }}
       className="indexpage-root"
     >
       <h1 className="title-page">เที่ยวหาธรรม</h1>
