@@ -41,7 +41,7 @@ const drawerWidth = 270;
 
 const options = ['Profile','Log Out'];
 
-function ManageContentPage(props) {
+function AddContentPage(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -304,7 +304,7 @@ function ManageContentPage(props) {
   );
 
 
-  ManageContentPage.propTypes = {
+  AddContentPage.propTypes = {
     /**
      * Injected by the documentation to work in an iframe.
      * You won't need it on your project.
@@ -312,5 +312,5 @@ function ManageContentPage(props) {
     window: PropTypes.func,
   };
 }
-export default ManageContentPage;
+export default AddContentPage;
 

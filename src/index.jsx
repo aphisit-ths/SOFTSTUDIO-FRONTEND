@@ -13,6 +13,8 @@ import LoginPage from "./pages/loginpage/loginpage";
 import OverviewPage from "./pages/adminpages/overviewpage";
 import ManageUsersPage from "./pages/adminpages/manageuserspage";
 import ManageContentPage from "./pages/adminpages/managecontentpage";
+import AddContentPage from "./pages/adminpages/addcontentpage";
+
 
 import NavBar from "./components/navbar";
 // pages ----->
@@ -35,6 +37,7 @@ ReactDOM.render(
         <Route path="/overview" element={<OverviewPage />} />{" "}
         <Route path="/manageusers" element={<ManageUsersPage />} />{" "}
         <Route path="/managecontent" element={<ManageContentPage />} />{" "}
+        <Route path="/addcontent" element={<AddContentPage />} />{" "}
       </Routes>{" "}
     </AnimatePresence>
   </BrowserRouter>,

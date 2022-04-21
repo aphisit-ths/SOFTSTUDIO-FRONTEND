@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       colors: {
         'Custom-BG-Grey': '#F6F6F6',
+        'Carrot-Orrange': '#F05A28'
       },
     },
   },
