@@ -5,23 +5,51 @@ import { FaShare } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import Comment from "./comment/comment";
 import { motion } from "framer-motion";
-import axios from "axios";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/react-hooks";
+
+const GET_CONTENT_BY_ID = gql`
+  query GetContentById($contentId: Int!) {
+    getContentById(contentId: $contentId) {
+      contentId
+      title
+      description
+      location
+      imageURL
+      tag
+    }
+  }
+`;
 function ContentPage() {
   const params = useParams();
-  const { id } = params;
-  const data = require("../../database/mockup.json");
-  const { title, comments, body, img_url, tags, location } = data[id - 1];
-  const count_img = img_url.length === 1;
+  const id = params.id;
 
-  const preview_image = img_url.map((img_url, idx) => (
-    <div key={idx} className={count_img ? "one-image" : "images"}>
-      <img src={img_url} alt={img_url} />
-    </div>
-  ));
+  const { data, loading, error } = useQuery(GET_CONTENT_BY_ID, {
+    variables: { contentId: parseInt(id) },
+  });
+
+  if (loading) return <p>loading</p>;
+  if (error) return <p>{error.message}</p>;
+  const {
+    title,
+    commentList,
+    description,
+    imageURL,
+    contentId,
+    tag,
+    location,
+  } = data.getContentById;
+  console.log(imageURL);
+  // const count_img = imageURL.length === 1;
+  // const preview_image = imageURL.map((imageURL, idx) => (
+  //   <div key={idx} className="one-image">
+  //     <img src={imageURL} alt={imageURL} />
+  //   </div>
+  // ));
   const like = Math.floor(Math.random() * 100);
-  const comment_elements = comments.map((comments, i, rand) => (
-    <Comment comment={comments} idx={i} rand={rand}></Comment>
-  ));
+  // const comment_elements = comments.map((comments, i, rand) => (
+  //   <Comment comment={comments} idx={i} rand={rand}></Comment>
+  // ));
 
   return (
     <div className="contentpage-root">
@@ -32,17 +60,18 @@ function ContentPage() {
         transition={{ ease: "easeInOut", duration: 0.5 }}
         className="middle-section"
       >
-        <div className="images-section">{preview_image}</div>
+        <div className="images-section">
+          <div className="one-image">
+            <img src={imageURL} alt={title} />
+          </div>
+        </div>
         <div className="body-section">
           <div className="top-section">
-            <p className="tags">
-              {" "}
-              หมวดหมู่ : {tags.map((tags) => `${tags}, `)}
-            </p>
+            <p className="tags"> หมวดหมู่ : {tag.map((tag) => `${tag}, `)}</p>
             <h1 className="name">{title}</h1>
             <h1 className="location">{location}</h1>
           </div>
-          <p className="body">{body}</p>
+          <p className="body">{description}</p>
         </div>
       </motion.div>
       <div className="like-section">
@@ -56,7 +85,7 @@ function ContentPage() {
         </div>
       </div>
       <div className="comment-section">
-        {comment_elements}
+        {/* {comment_elements} */}
         <div className="addcomment-section">
           <textarea placeholder="โปรดใช้ถ้อยคำที่สุภาพ" />
           <div id="comment" className="textarea-interaction">

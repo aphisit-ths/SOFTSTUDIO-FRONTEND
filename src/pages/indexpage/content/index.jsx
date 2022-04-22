@@ -5,11 +5,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 function Content({ data, idx }) {
   const navigate = useNavigate();
-  const { title, comments, body, img_url, id } = data;
+  const { title, commentList, description, imageURL, contentId } = data;
   const like = Math.floor(Math.random() * 100);
   const [likeToggle, setLikeToggle] = useState(false);
   let [likeScore, setLikeScore] = useState(like);
-
   function likedContent() {
     if (!likeToggle) {
       setLikeToggle(!likeToggle);
@@ -28,15 +27,21 @@ function Content({ data, idx }) {
       key={idx}
       className="content-root"
     >
-      <div onClick={() => navigate("content/" + id)} className="image-section">
-        <img src={img_url[0]} alt={img_url[0]} className="img" />
+      <div
+        onClick={() => navigate("content/" + contentId)}
+        className="image-section"
+      >
+        <img src={imageURL} alt={title} className="img" />
       </div>
       <div className="info-section">
         <div className="body-section">
-          <h1 onClick={() => navigate("content/" + id)} className="title">
+          <h1
+            onClick={() => navigate("content/" + contentId)}
+            className="title"
+          >
             {title}
           </h1>
-          <p className="body"> {body}</p>
+          <p className="body"> {description}</p>
         </div>
         <div className="interaction">
           <div
@@ -56,9 +61,12 @@ function Content({ data, idx }) {
             <AiOutlineComment
               style={{ color: "#f8f8f8", fill: "white", fontSize: 50 }}
             />
-            <p>{comments.length}</p>
+            <p>{commentList.length}</p>
           </div>
-          <div onClick={() => navigate("content/" + id)} className="button">
+          <div
+            onClick={() => navigate("content/" + contentId)}
+            className="button"
+          >
             <p>อ่านต่อ</p>
             <p>....</p>
           </div>

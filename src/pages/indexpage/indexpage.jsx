@@ -4,21 +4,32 @@ import Content from "./content";
 import axios from "axios";
 import { motionVariants } from "../../utils/motion_variant";
 import { motion } from "framer-motion";
-function IndexPage() {
-  const data = require("../../database/mockup.json");
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/react-hooks";
 
-  const contents = data.map((data, i) => <Content data={data} idx={i} />);
-  useEffect(() => {
-    async function getAllCountry() {
-      try {
-        const res = await axios.get("https://localhost:5001/api/Contents");
-        console.log(res.data);
-      } catch (error) {
-        console.log(error);
-      }
+const GET_CONTNETS = gql`
+  query GET_CONTNETS {
+    contents {
+      contentId
+      title
+      description
+      imageURL
+      location
+      tag
+      commentList
+      contentStatus
     }
-    getAllCountry();
-  }, []);
+  }
+`;
+function IndexPage() {
+  const { data, loading, error } = useQuery(GET_CONTNETS);
+  if (loading) return <p>loading</p>;
+  if (error) return <p>error : {console.log(error)}</p>;
+
+  const allContents = data.contents;
+  const contents = allContents.map((allContents, i) => (
+    <Content data={allContents} idx={i} />
+  ));
   return (
     <motion.div
       initial={{ opacity: 0, x: -100 }}
