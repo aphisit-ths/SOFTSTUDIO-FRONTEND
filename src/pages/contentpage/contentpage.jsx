@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./contentpage.scss";
 import { AiFillHeart } from "react-icons/ai";
 import { FaShare } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import Comment from "./comment/comment";
 import { motion } from "framer-motion";
+import axios from "axios";
 function ContentPage() {
   const params = useParams();
   const { id } = params;
