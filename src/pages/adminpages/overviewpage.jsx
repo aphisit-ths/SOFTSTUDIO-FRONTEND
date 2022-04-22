@@ -132,8 +132,7 @@ function OverviewPage(props) {
           }}
           variant="contained"
         >
-          {" "}
-          + register
+          <h>+ register</h>
         </Button>
       </center>
 
