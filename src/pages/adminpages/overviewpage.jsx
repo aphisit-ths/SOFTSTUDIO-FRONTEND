@@ -14,6 +14,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import ListItemButton from "@mui/material/ListItemButton";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
@@ -40,6 +41,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ArticleIcon from "@mui/icons-material/Article";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import GroupIcon from "@mui/icons-material/Group";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 const drawerWidth = 270;
 
 const options = ["Profile", "Log Out"];
@@ -460,27 +462,43 @@ function OverviewPage(props) {
               class="bg-white ml-5 mt-9"
               style={{ width: "35vw", height: "32.5vh", borderRadius: 10 }}
             >
-              
-                <span
-                  class="ml-10 mt-5 font-medium inline-block"
-                  style={{ color: "#000", fontStyle: "normal", fontSize: 22 }}
-                >
-                   ผู้ใช้งานล่าสุด +
-                </span>
-              
+              <span
+                class="ml-10 mt-5 font-medium inline-block"
+                style={{ color: "#000", fontStyle: "normal", fontSize: 22 }}
+              >
+                ผู้ใช้งานล่าสุด +
+              </span>
 
               <div>
                 <List>
-                
-                  {["jandoe@gmail.com", "jandoe@gmail.com", "jandoe@gmail.com", "jandoe@gmail.com","jandoe@gmail.com"].map(
-                    (text) => (
-                      
-                      <ListItem component={Divider} >
-                        <ListItemText class="ml-20 mt-1.5" style={{color:"#737B7B",fontSize: 14}} primary={text} />
-                        
+                  {[
+                    "jandoe@gmail.com",
+                    "jandoe@gmail.com",
+                    "jandoe@gmail.com",
+                    "jandoe@gmail.com",
+                    
+                  ].map((text) => (
+                    <>
+                      <ListItem>
+                        <ListItemButton
+                          class="ml-20 mt-4"
+                          style={{ color: "#737B7B", fontSize: 14 }}
+                          
+                        >
+                          {text}
+                        <ListItemIcon>
+                          
+                            <ArrowForwardIosIcon
+                              sx={{ ml: "25vh", width: "2vw", height: "2vh" }}
+                              style={{ color: "#464646" }}
+                            />
+                          
+                        </ListItemIcon>
+                        </ListItemButton>
                       </ListItem>
-                    )
-                  )}
+                      <Divider variant='inset' flexItem={true} style={{width:'25vw' ,marginLeft:'5vw'}} ></Divider>
+                    </>
+                  ))}
                 </List>
               </div>
             </Box>
@@ -496,6 +514,38 @@ function OverviewPage(props) {
                 >
                   บทความล่าสุด +
                 </span>
+
+                <div>
+                  <List>
+                    {[
+                      "วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)",
+                      "วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)",
+                      "วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)",
+                      "วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)",
+                    ].map((text) => (
+                      <>
+                      <ListItem>
+                        <ListItemButton
+                          class="ml-20 mt-4"
+                          style={{ color: "#737B7B", fontSize: 14 }}
+                          
+                        >
+                          {text}
+                        <ListItemIcon>
+                          
+                            <ArrowForwardIosIcon
+                              sx={{ ml: "18vh", width: "2vw", height: "2vh" }}
+                              style={{ color: "#464646" }}
+                            />
+                          
+                        </ListItemIcon>
+                        </ListItemButton>
+                      </ListItem>
+                      <Divider variant='inset' flexItem={true} style={{width:'25vw' ,marginLeft:'5vw'}} ></Divider>
+                      </>
+                    ))}
+                  </List>
+                </div>
               </div>
             </Box>
           </div>
