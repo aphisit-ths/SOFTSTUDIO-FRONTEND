@@ -1,0 +1,5 @@
+add jwt token to localstorage then packing to context
+protected route
+
+
+secret = thisdatanotfuckingsecretdog

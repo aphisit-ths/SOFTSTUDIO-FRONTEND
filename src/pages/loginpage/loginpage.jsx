@@ -11,42 +11,41 @@ const SIGN_IN = gql`
   mutation SIGN_IN($userName: String!, $password: String!) {
     login(userName: $userName, password: $password) {
       user {
-        status
         userId
         userName
-        email
-        lastName
+        password
         name
+        lastName
+        email
+        status
       }
       isAdmin
+      token
     }
   }
 `;
 
 function LoginPage() {
-  const { setAuthUser } = useContext(AuthContext);
-  const navigate = useNavigate();
   const {
     register,
     reset,
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onChange" });
-
+  const { setAuthUser } = useContext(AuthContext);
   const [login, { loading, error }] = useMutation(SIGN_IN, {
     onCompleted: (data) => {
       if (data) {
         setAuthUser(data.login.user);
-        // Cookies.set("user", data.login.user.userId);
-        navigate("/");
-        console.log("login sucessfull ===>");
+        Cookies.set("token", data.login.token);
+        console.log("login sucessfully ===>");
       }
     },
   });
+
   const onSubmit = async (info) => {
     try {
       await login({ variables: info });
-      reset();
     } catch (error) {
       console.log(error);
     }
@@ -137,7 +136,7 @@ function LoginPage() {
           เข้าสู่ระบบ
         </button>
         {error && (
-          <p className="px-6 py-2 rounded-md text-white shadow-md bg-red-600 cursor-pointer">
+          <p className="px-6 py-4 rounded-xl text-white  bg-red-500 ">
             {error.message}
           </p>
         )}
