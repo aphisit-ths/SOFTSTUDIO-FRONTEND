@@ -37,8 +37,35 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import TextField from '@mui/material/TextField';
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import ReactTableContainer from "react-table-container";
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+
 const drawerWidth = 270;
 
+let id = 0;
+function createData(ลำดับที่, ชื่อผู้ใช้, วันที่, อีเมล, สถานะ,ตัวเลือก) {
+  id += 1;
+  return { ลำดับที่, ชื่อผู้ใช้, วันที่, อีเมล, สถานะ,ตัวเลือก };
+}
+
+let data = [
+  createData(1, "killan James", "28 May 2021", "jendoe@example.com","Active"),
+  createData(2, "Kicker Nicil", "28 May 2021","jendoe@example.com" ,"Banned"),
+  createData(3, "Thomas Flecher", "28 May 2021","jendoe@example.com" ,"Active"),
+  createData(4, "killan James", "28 May 2021","jendoe@example.com" ,"AdminID"),
+  createData(5, "Deler Karon", "28 May 2021","jendoe@example.com" ,"Active"),
+  createData(6, "Michel Jon", "28 May 2021","jendoe@example.com" ,"Active"),
+  createData(7, "Heidry kon", "28 May 2021","jendoe@example.com" ,"Active"),
+  createData(8, "killan James", "28 May 2021","jendoe@example.com" ,"Active"),
+]
 const options = ["Profile", "Log Out"];
 
 function ManageUsersPage(props) {
@@ -337,36 +364,238 @@ function ManageUsersPage(props) {
       >
         <Toolbar></Toolbar>
 
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        <div class="flex items-stretch ... mt-3 ml-3">
+          <h
+            style={{
+              fontStyle: "normal",
+              fontWeight: 500,
+              fontSize: 24,
+              color: "#303032",
+              marginTop : "1vh"
+            }}
+          >
+            สมาชิกทั้งหมด
+          </h>
+
+          <TextField
+          required
+          id="outlined-required"
+          label="username"
+
+          style={{marginLeft: "30vw"}}
+          
+        />
+        <TextField
+          required
+          id="outlined-required"
+          label="password"
+
+          style={{marginLeft: "1vw"}}
+          
+        />
+        <TextField
+          required
+          id="outlined-required"
+          label="Email"
+
+          style={{marginLeft: "1vw"}}
+          
+        />
+
+
+
+          <Button
+            style={{
+              marginLeft: "1vw",
+              backgroundColor: "#F05A28",
+              color: "#FFF",
+              borderRadius: 6,
+              width: "7vw",
+              boxShadow: " 0px 1px 1px rgba(123, 123, 123, 0.16)",
+            }}
+          >
+            <h style={{ fontWeight: 500, fontSize: 14, fontStyle: "normal" }}>
+              เพิ่มสมาชิก
+            </h>
+          </Button>
+        </div>
+
+        <Box
+          class="bg-white mt-5 "
+          style={{ width: "80vw", height: "80vh", borderRadius: 10 }}
+        >
+          <ReactTableContainer
+            style={{
+              // Removes `inline-block` space between <Paper> and <ReactTableContainer>
+              marginBottom: "-4px",
+              marginTop: "4vh",
+              marginLeft: "2.75vw",
+            }}
+            width="75vw"
+            height="73vh"
+            customHeader={[TableHead]}
+          >
+            <Table>
+              <TableHead
+                style={{ backgroundColor: "#FAFAFA", borderRadius: 6 }}
+              >
+                <TableRow>
+                  <TableCell>
+                    <h
+                      style={{
+                        marginLeft: "1vw",
+                        fontWeight: 500,
+                        fontSize: 18,
+                        color: "#737B7B",
+                      }}
+                    >
+                      ลำดับที่
+                    </h>
+                  </TableCell>
+                  <TableCell>
+                    <h
+                      style={{
+                        fontWeight: 500,
+                        fontSize: 18,
+                        color: "#737B7B",
+                      }}
+                    >
+                      ชื่อผู้ใช้
+                    </h>
+                  </TableCell>
+                  <TableCell>
+                    <h
+                      style={{
+                        fontWeight: 500,
+                        fontSize: 18,
+                        color: "#737B7B",
+                        marginLeft:"0.4vw"
+                      }}
+                    >
+                      วันที่
+                    </h>
+                  </TableCell>
+                  <TableCell>
+                    <h
+                      style={{
+                        fontWeight: 500,
+                        fontSize: 18,
+                        color: "#737B7B",
+                        marginLeft:"2vw"
+                      }}
+                    >
+                      อีเมล
+                    </h>
+                  </TableCell>
+                  <TableCell>
+                    <h
+                      style={{
+                        fontWeight: 500,
+                        fontSize: 18,
+                        color: "#737B7B",
+                        marginLeft:"2.75vh"
+                      }}
+                    >
+                      สถานะ
+                    </h>
+                  </TableCell>
+
+                  <TableCell>
+                    <h
+                      style={{
+                        fontWeight: 500,
+                        fontSize: 18,
+                        color: "#737B7B",
+                        marginLeft:"8vh"
+                      }}
+                    >
+                      ตัวเลือก
+                    </h>
+                  </TableCell>
+
+
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data.map((n) => (
+                  <TableRow key={n.id}>
+                    <TableCell
+                      style={{ borderColor: "#F4F4F4", color: "#737B7B" }}
+                    >
+                      {" "}
+                      <h style={{ marginLeft: "2vw" }}>{n.ลำดับที่}</h>
+                    </TableCell>
+                    <TableCell
+                      style={{ borderColor: "#F4F4F4", color: "#737B7B" }}
+                    >
+                      {n.ชื่อผู้ใช้}
+                    </TableCell>
+                    <TableCell
+                      style={{ borderColor: "#F4F4F4", color: "#737B7B" }}
+                    >
+                      {n.วันที่}
+                    </TableCell>
+                    <TableCell
+                      style={{ borderColor: "#F4F4F4", color: "#737B7B" }}
+                    >
+                      <h style={{ marginLeft: "1vw" }}></h>
+                      {n.อีเมล}
+                    </TableCell>
+
+                    <TableCell
+                      style={{ borderColor: "#F4F4F4", color: n.สถานะ === "Active" ? "#56C456" : n.สถานะ === "Banned" ? "#FF3D3D" :n.สถานะ === "AdminID" ? "#8146FF" : "#737B7B"}}
+                    >
+                      <h style={{ marginLeft: "1.5vw" }}></h>
+                      {n.สถานะ}
+                    </TableCell>
+
+
+
+                    <TableCell
+                      style={{ borderColor: "#F4F4F4", color: "#737B7B" }}
+                    >
+                      <ListItemIcon>
+                      <IconButton
+                        type="submit"
+                        sx={{ p: "5px",marginTop:'1vh',marginLeft:'2vw'}}
+                      >
+                        <ModeEditOutlineOutlinedIcon  style={{color: "#F05A28",borderColor:"#F2F2F2",borderWidth:1,borderRadius:9,transform:"scale(1.5)",padding:'3.3' }} />
+                      </IconButton>
+                    </ListItemIcon>
+
+                    <ListItemIcon>
+                      <IconButton
+                        type="submit"
+                        sx={{ p: "5px",marginTop:'1vh',marginLeft:'1vw'}}
+                      >
+                        <PersonOutlineOutlinedIcon  style={{color: "#F05A28",borderColor:"#F2F2F2",borderWidth:1,borderRadius:9,transform:"scale(1.5)",padding:'3.3' }} />
+                      </IconButton>
+                    </ListItemIcon>
+
+
+                    
+
+                    <ListItemIcon>
+                      <IconButton
+                        type="submit"
+                        sx={{ p: "5px",marginTop:'1vh',marginLeft:'1vw'}}
+                      >
+                        <DeleteOutlinedIcon  style={{color: "#F26E6E",borderColor:"#F2F2F2",borderWidth:1,borderRadius:9,transform:"scale(1.5)",padding:'3.3' }} />
+                      </IconButton>
+                    </ListItemIcon>
+
+
+                    </TableCell>
+                    
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ReactTableContainer>
+        </Box>
+        
       </Box>
+      
     </Box>
   );
 
