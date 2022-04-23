@@ -38,7 +38,6 @@ function RegisterPage() {
     },
   });
   if (loading) return <p>loading..</p>;
-  if (error) return <p>{error.message}</p>;
 
   const onSubmit = async (info) => {
     try {

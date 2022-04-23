@@ -39,7 +39,6 @@ function ContentPage() {
     tag,
     location,
   } = data.getContentById;
-  console.log(imageURL);
   // const count_img = imageURL.length === 1;
   // const preview_image = imageURL.map((imageURL, idx) => (
   //   <div key={idx} className="one-image">

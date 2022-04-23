@@ -3,7 +3,7 @@ import "./content.scss";
 import { AiFillHeart, AiOutlineComment } from "react-icons/ai";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-function Content({ data, idx }) {
+function Content({ data, i }) {
   const navigate = useNavigate();
   const { title, commentList, description, imageURL, contentId } = data;
   const like = Math.floor(Math.random() * 100);
@@ -22,9 +22,9 @@ function Content({ data, idx }) {
     <motion.div
       initial={{ opacity: 0, y: 200 }}
       animate={{ opacity: 1, y: 1 }}
-      transition={{ ease: "easeInOut", duration: idx * 0.7 }}
+      transition={{ ease: "easeInOut", duration: 1 * 0.5 }}
       exit={{ x: 600 }}
-      key={idx}
+      key={i}
       className="content-root"
     >
       <div

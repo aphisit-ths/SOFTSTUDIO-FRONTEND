@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./index.scss";
 import Content from "./content";
-import axios from "axios";
-import { motionVariants } from "../../utils/motion_variant";
 import { motion } from "framer-motion";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
@@ -28,7 +26,7 @@ function IndexPage() {
 
   const allContents = data.contents;
   const contents = allContents.map((allContents, i) => (
-    <Content data={allContents} idx={i} />
+    <Content data={allContents} key={i} />
   ));
   return (
     <motion.div
