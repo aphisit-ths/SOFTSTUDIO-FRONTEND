@@ -38,7 +38,9 @@ function LoginPage() {
       if (data) {
         setAuthUser(data.login.user);
         Cookies.set("token", data.login.token);
+        Cookies.set("isAdmin", data.login.isAdmin);
         console.log("login sucessfully ===>");
+        reset();
       }
     },
   });

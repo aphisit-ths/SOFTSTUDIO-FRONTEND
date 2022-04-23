@@ -27,7 +27,7 @@ function NavBar() {
                 <Link to={"/"}>
                   <p className="login-btn">หน้าแรก</p>
                 </Link>
-                <Link to={"/updateinfo/" + user.userId}>
+                <Link to={"/updateinfo/" + user.userName}>
                   <p className="register-btn">{user.userName.toLowerCase()}</p>
                 </Link>
               </>

@@ -24,7 +24,7 @@ export default function AuthProvider({ children, userData }) {
   const setAuthUser = (userInfo) => setUser(userInfo);
 
   const signout = () => {
-    cookies.remove("user");
+    cookies.remove("token");
     cookies.remove("isAdmin");
     setUser(null);
     localStorage.setItem("logout", Date.now());

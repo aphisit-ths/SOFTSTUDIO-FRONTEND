@@ -22,12 +22,16 @@ import EditUserPage from "./pages/edituserpage";
 // pages ----->
 const rootElement = document.getElementById("root");
 const token = Cookies.get("token");
-const data = jwt_decode(token);
+const data = (token) => {
+  if (!token || token === undefined) return undefined;
+  const data = jwt_decode(token);
+  return data;
+};
 
 ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
-      <AuthProvider userData={data}>
+      <AuthProvider userData={data(token)}>
         <AnimatePresence>
           <App>
             <Routes>
@@ -39,7 +43,7 @@ ReactDOM.render(
               <Route path="/overview" element={<OverviewPage />} />{" "}
               <Route path="/manageusers" element={<ManageUsersPage />} />{" "}
               <Route path="/managecontent" element={<ManageContentPage />} />{" "}
-              <Route path="/updateinfo:id" element={<EditUserPage />} />{" "}
+              <Route path="/updateinfo/:id" element={<EditUserPage />} />{" "}
             </Routes>{" "}
           </App>
         </AnimatePresence>
