@@ -391,7 +391,7 @@ function ManageContentPage(props) {
           >
             เนื้อหาทั้งหมด
           </h>
-
+          <Link to={"/addcontent"} >
           <Button
             style={{
               marginLeft: "65vw",
@@ -406,6 +406,7 @@ function ManageContentPage(props) {
               เพิ่มเนื้อหา
             </h>
           </Button>
+          </Link>
         </div>
 
         <Box
