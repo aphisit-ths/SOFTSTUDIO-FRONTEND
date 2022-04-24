@@ -11,11 +11,22 @@ const GET_CONTNETS = gql`
       contentId
       title
       description
-      imageURL
       location
+      imageURL
       tag
-      commentList
       contentStatus
+      commentList {
+        commentId
+        user {
+          password
+          userId
+          userName
+          name
+        }
+        description
+        date
+        commentStatus
+      }
     }
   }
 `;

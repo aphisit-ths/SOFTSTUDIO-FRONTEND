@@ -32,6 +32,7 @@ function LoginPage() {
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onChange" });
+  const navigate = useNavigate();
   const { setAuthUser } = useContext(AuthContext);
   const [login, { loading, error }] = useMutation(SIGN_IN, {
     onCompleted: (data) => {
@@ -40,6 +41,7 @@ function LoginPage() {
         Cookies.set("token", data.login.token);
         Cookies.set("isAdmin", data.login.isAdmin);
         console.log("login sucessfully ===>");
+        navigate("/");
         reset();
       }
     },

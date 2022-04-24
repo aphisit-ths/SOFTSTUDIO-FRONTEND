@@ -20,8 +20,9 @@ import ManageUsersPage from "./pages/adminpages/manageuserspage";
 import ManageContentPage from "./pages/adminpages/managecontentpage";
 import EditUserPage from "./pages/edituserpage";
 import AddContentPage from "./pages/adminpages/addcontentpage";
-
-import NavBar from "./components/navbar";
+import UserProtectedRoute from "./utils/useProtectedRoute";
+import { IsLoggedIn, IsAddminLayout } from "./utils/useProtectedRoute";
+import AdminLayout from "./components/admin/layout";
 // pages ----->
 const rootElement = document.getElementById("root");
 const token = Cookies.get("token");
@@ -36,20 +37,29 @@ ReactDOM.render(
     <ApolloProvider client={client}>
       <AuthProvider userData={data(token)}>
         <AnimatePresence>
-          <App>
+          <IsAddminLayout>
             <Routes>
               <Route path="/" element={<IndexPage />} />{" "}
-              <Route path="/register" element={<RegisterPage />} />{" "}
-              <Route path="/login" element={<LoginPage />} />{" "}
               <Route path="/content/:id" element={<ContentPage />} />{" "}
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/overview" element={<OverviewPage />} />{" "}
-              <Route path="/manageusers" element={<ManageUsersPage />} />{" "}
-              <Route path="/managecontent" element={<ManageContentPage />} />{" "}
-              <Route path="/addcontent" element={<AddContentPage />} />{" "}
-              <Route path="/updateinfo/:id" element={<EditUserPage />} />{" "}
+              <Route element={<IsLoggedIn />}>
+                <Route path="/login" element={<LoginPage />} />{" "}
+                <Route path="/register" element={<RegisterPage />} />{" "}
+              </Route>
+              <Route element={<UserProtectedRoute />}>
+                <Route path="/updateinfo/:id" element={<EditUserPage />} />{" "}
+                <Route path="/admin/overview" element={<OverviewPage />} />{" "}
+                <Route
+                  path="/admin/manageusers"
+                  element={<ManageUsersPage />}
+                />{" "}
+                <Route
+                  path="/admin/managecontent"
+                  element={<ManageContentPage />}
+                />{" "}
+                <Route path="/admin/addcontent" element={<AddContentPage />} />{" "}
+              </Route>
             </Routes>{" "}
-          </App>
+          </IsAddminLayout>
         </AnimatePresence>
       </AuthProvider>
     </ApolloProvider>

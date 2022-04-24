@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Icon from "./icon";
 import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -42,11 +42,28 @@ import ArticleIcon from "@mui/icons-material/Article";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import GroupIcon from "@mui/icons-material/Group";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/client";
 const drawerWidth = 270;
-
 const options = ["Profile", "Log Out"];
 
+const QUERY_USERS = gql`
+  query QUERY_USERS {
+    users {
+      userId
+      userName
+      password
+      name
+      lastName
+      email
+      status
+    }
+  }
+`;
 function OverviewPage(props) {
+  const { data, loading, error } = useQuery(QUERY_USERS, {
+    pollInterval: 5000,
+  });
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -82,7 +99,7 @@ function OverviewPage(props) {
   const drawer = (
     <div>
       <Toolbar>
-        <div class="ml-1 mb-1">
+        <div className="ml-1 mb-1">
           <Link to={"/"}>
             <Icon width="160" height="70"></Icon>
           </Link>
@@ -96,7 +113,7 @@ function OverviewPage(props) {
           { label: "เนื้อหา", to: "/managecontent" },
           { label: "สมาชิก", to: "/manageusers" },
         ].map((text, index) => (
-          <Link to={text.to}>
+          <Link key={index} to={text.to}>
             <ListItem
               button
               key={text}
@@ -164,52 +181,6 @@ function OverviewPage(props) {
 
   return (
     <Box sx={{ display: "flex", backgroundColor: "#F6F6F6", height: "100vh" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      ></AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
       <Box
         component="main"
         sx={{
@@ -218,124 +189,13 @@ function OverviewPage(props) {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        <Toolbar>
-          <Box
-            component="form"
-            sx={{
-              p: "2px 4px",
-              display: "flex",
-              alignItems: "center",
-              width: 400,
-              mb: "4vh",
-              borderWidth: 3,
-              borderColor: "#CDCFD4",
-              borderRadius: 7,
-            }}
-          >
-            <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-            <InputBase
-              sx={{ ml: 1, flex: 1, color: "#4F5867" }}
-              placeholder="ค้นหา"
-              inputProps={{ "aria-label": "search google maps" }}
-            />
-          </Box>
-
-          <IconButton sx={{ ml: "40vw", mb: "4vh" }} aria-label="Notification">
-            <NotificationsRoundedIcon />
-          </IconButton>
-
-          <Button
-            variant="outlined"
-            sx={{ mb: "4vh" }}
-            style={{ marginLeft: 15, borderWidth: 0, color: "#F05A28" }}
-            aria-label="Profile"
-            startIcon={
-              <AccountCircleRoundedIcon style={{ color: "#4F5867" }} />
-            }
-          >
-            Username
-          </Button>
-
-          {/* <IconButton sx={{ mr:'8vw',mb:'4vh' }} aria-label="Profile">
-        <AccountCircleRoundedIcon />
-      </IconButton> */}
-
-          <React.Fragment>
-            <ButtonGroup
-              variant="contained"
-              ref={anchorRef}
-              aria-label="split button"
-              sx={{ mb: "4vh" }}
-              style={{ borderWidth: 0, boxShadow: "none" }}
-            >
-              <Button
-                size="small"
-                aria-controls={open ? "split-button-menu" : undefined}
-                aria-expanded={open ? "true" : undefined}
-                aria-label="select merge strategy"
-                aria-haspopup="menu"
-                onClick={handleToggle}
-                style={{
-                  backgroundColor: "#F6F6F6",
-                  color: "#94979E",
-                  borderRadius: 0,
-                  borderWidth: 0,
-                  boxShadow: "none",
-                  height: 30,
-                }}
-                elevation={0}
-              >
-                <KeyboardArrowDownIcon />
-              </Button>
-            </ButtonGroup>
-            <Popper
-              open={open}
-              anchorEl={anchorRef.current}
-              role={undefined}
-              transition
-              disablePortal
-            >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  style={{
-                    transformOrigin:
-                      placement === "bottom" ? "center top" : "center bottom",
-                  }}
-                >
-                  <Paper>
-                    <ClickAwayListener onClickAway={handleClose}>
-                      <MenuList id="split-button-menu" autoFocusItem>
-                        {options.map((option, index) => (
-                          <MenuItem
-                            key={option}
-                            disabled={index === 2}
-                            selected={index === selectedIndex}
-                            onClick={(event) =>
-                              handleMenuItemClick(event, index)
-                            }
-                          >
-                            {option}
-                          </MenuItem>
-                        ))}
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
-          </React.Fragment>
-        </Toolbar>
-
-        <div class="flex items-stretch ...">
+        <div className="flex items-stretch ...">
           <div>
             <Box
-              class="bg-white"
+              className="bg-white"
               style={{ width: "17vw", height: "15vh", borderRadius: 10 }}
             >
-              <div class="flex items-stretch ...">
+              <div className="flex items-stretch ...">
                 <ArticleIcon
                   size="small"
                   sx={{
@@ -348,9 +208,9 @@ function OverviewPage(props) {
                     borderRadius: 2,
                   }}
                 />
-                <div class="mt-12">
+                <div className="mt-12">
                   <span
-                    class="ml-8"
+                    className="ml-8"
                     style={{
                       color: "#182524",
                       fontSize: 20,
@@ -361,7 +221,7 @@ function OverviewPage(props) {
                     500
                   </span>
                   <div>
-                    <span class="ml-8" style={{ color: "#6B7373" }}>
+                    <span className="ml-8" style={{ color: "#6B7373" }}>
                       จำนวนเนื้อหา
                     </span>
                   </div>
@@ -372,10 +232,10 @@ function OverviewPage(props) {
 
           <div>
             <Box
-              class="bg-white ml-6 "
+              className="bg-white ml-6 "
               style={{ width: "17vw", height: "15vh", borderRadius: 10 }}
             >
-              <div class="flex items-stretch ...">
+              <div className="flex items-stretch ...">
                 <VisibilityIcon
                   size="small"
                   sx={{
@@ -388,9 +248,9 @@ function OverviewPage(props) {
                     borderRadius: 2,
                   }}
                 />
-                <div class="mt-12">
+                <div className="mt-12">
                   <span
-                    class="ml-8"
+                    className="ml-8"
                     style={{
                       color: "#182524",
                       fontSize: 20,
@@ -401,7 +261,7 @@ function OverviewPage(props) {
                     104
                   </span>
                   <div>
-                    <span class="ml-8" style={{ color: "#6B7373" }}>
+                    <span className="ml-8" style={{ color: "#6B7373" }}>
                       จำนวนคนเข้าชมวันนี้
                     </span>
                   </div>
@@ -411,10 +271,10 @@ function OverviewPage(props) {
           </div>
           <div>
             <Box
-              class="bg-white ml-6"
+              className="bg-white ml-6"
               style={{ width: "17vw", height: "15vh", borderRadius: 10 }}
             >
-              <div class="flex items-stretch ...">
+              <div className="flex items-stretch ...">
                 <GroupIcon
                   size="small"
                   sx={{
@@ -427,9 +287,9 @@ function OverviewPage(props) {
                     borderRadius: 2,
                   }}
                 />
-                <div class="mt-12">
+                <div className="mt-12">
                   <span
-                    class="ml-8"
+                    className="ml-8"
                     style={{
                       color: "#182524",
                       fontSize: 20,
@@ -440,7 +300,7 @@ function OverviewPage(props) {
                     150
                   </span>
                   <div>
-                    <span class="ml-8" style={{ color: "#6B7373" }}>
+                    <span className="ml-8" style={{ color: "#6B7373" }}>
                       จำนวนสมาชิก
                     </span>
                   </div>
@@ -450,18 +310,18 @@ function OverviewPage(props) {
           </div>
         </div>
 
-        <div class="flex items-stretch ...">
+        <div className="flex items-stretch ...">
           <Box
-            class="bg-white mt-9"
+            className="bg-white mt-9"
             style={{ width: "50vw", height: "67vh", borderRadius: 10 }}
           ></Box>
           <div>
             <Box
-              class="bg-white ml-5 mt-9"
+              className="bg-white ml-5 mt-9"
               style={{ width: "35vw", height: "32.5vh", borderRadius: 10 }}
             >
               <span
-                class="ml-10 mt-5 font-medium inline-block"
+                className="ml-10 mt-5 font-medium inline-block"
                 style={{ color: "#000", fontStyle: "normal", fontSize: 22 }}
               >
                 ผู้ใช้งานล่าสุด +
@@ -474,11 +334,11 @@ function OverviewPage(props) {
                     "jandoe@gmail.com",
                     "jandoe@gmail.com",
                     "jandoe@gmail.com",
-                  ].map((text) => (
+                  ].map((text, i) => (
                     <>
-                      <ListItem>
+                      <ListItem key={i}>
                         <ListItemButton
-                          class="ml-20 mt-4"
+                          className="ml-20 mt-4"
                           style={{ color: "#737B7B", fontSize: 14 }}
                         >
                           {text}
@@ -502,12 +362,12 @@ function OverviewPage(props) {
             </Box>
 
             <Box
-              class="bg-white mt-4 ml-5"
+              className="bg-white mt-4 ml-5"
               style={{ width: "35vw", height: "32.5vh", borderRadius: 10 }}
             >
               <div>
                 <span
-                  class="ml-10 mt-5 font-medium inline-block"
+                  className="ml-10 mt-5 font-medium inline-block"
                   style={{ color: "#000", fontStyle: "normal", fontSize: 22 }}
                 >
                   บทความล่าสุด +
@@ -520,11 +380,11 @@ function OverviewPage(props) {
                       "วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)",
                       "วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)",
                       "วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)",
-                    ].map((text) => (
+                    ].map((text, i) => (
                       <>
-                        <ListItem>
+                        <ListItem key={i}>
                           <ListItemButton
-                            class="ml-20 mt-4"
+                            className="ml-20 mt-4"
                             style={{ color: "#737B7B", fontSize: 14 }}
                           >
                             {text}

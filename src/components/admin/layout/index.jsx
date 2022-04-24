@@ -1,6 +1,7 @@
-import React from "react";
-import Icon from "./icon";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState, useRef, useContext } from "react";
+import { AuthContext } from "../../../context/AuthProvider";
+import Icon from "../../navbar/icon";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
@@ -9,45 +10,40 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { createTheme } from "@mui/material/styles";
+
 import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import SearchIcon from "@mui/icons-material/Search";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
-import DirectionsIcon from "@mui/icons-material/Directions";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+
 const drawerWidth = 270;
 
 const options = ["Profile", "Log Out"];
 
-function AddContentPage(props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+function AdminLayout({ props, children, window }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null);
+  const [selectedIndex, setSelectedIndex] = useState(1);
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -69,7 +65,6 @@ function AddContentPage(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
   const drawer = (
     <div>
       <Toolbar>
@@ -82,27 +77,16 @@ function AddContentPage(props) {
       <Divider />
       <List>
         {[
-          { label: "Dashboard", to: "/overview" },
-          { label: "เนื้อหา", to: "/managecontent" },
-          { label: "สมาชิก", to: "/manageusers" },
+          { label: "Dashboard", to: "/admin/overview" },
+          { label: "เนื้อหา", to: "/admin/managecontent" },
+          { label: "สมาชิก", to: "/admin/manageusers" },
         ].map((text, index) => (
-          <Link to={text.to}>
-            <ListItem
-              button
-              key={text}
-              style={{ color: index === 1 ? "#F05A28" : "#000" }}
-            >
+          <Link key={index} to={text.to}>
+            <ListItem button key={text}>
               <ListItemIcon>
                 {index - 0 === 0 ? <GridViewRoundedIcon sx={{ ml: 1 }} /> : ""}
 
-                {index - 1 === 0 ? (
-                  <ArticleRoundedIcon
-                    sx={{ ml: 1 }}
-                    style={{ color: "#F05A28" }}
-                  />
-                ) : (
-                  ""
-                )}
+                {index - 1 === 0 ? <ArticleRoundedIcon sx={{ ml: 1 }} /> : ""}
 
                 {index - 2 === 0 ? <PersonRoundedIcon sx={{ ml: 1 }} /> : ""}
               </ListItemIcon>
@@ -121,8 +105,7 @@ function AddContentPage(props) {
           }}
           variant="contained"
         >
-          {" "}
-          + register
+          <p>+ register</p>
         </Button>
       </center>
 
@@ -151,7 +134,7 @@ function AddContentPage(props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-
+  const { user, signout } = useContext(AuthContext);
   return (
     <Box sx={{ display: "flex", backgroundColor: "#F6F6F6", height: "100vh" }}>
       <CssBaseline />
@@ -166,7 +149,7 @@ function AddContentPage(props) {
           sx={{ minHeight: 64, height: "8vh" }}
           style={{
             backgroundColor: "#FFFFFF",
-            boxShadow: "0px 0px #F6F6F6 ",
+            boxShadow: "0px 0px 10px 10px #F6F6F6 ",
             borderWidth: 0,
           }}
         >
@@ -210,14 +193,10 @@ function AddContentPage(props) {
               <AccountCircleRoundedIcon style={{ color: "#4F5867" }} />
             }
           >
-            Username
+            {user.userName}
           </Button>
 
-          {/* <IconButton sx={{ mr:'8vw',mb:'4vh' }} aria-label="Profile">
-        <AccountCircleRoundedIcon />
-      </IconButton> */}
-
-          <React.Fragment>
+          <>
             <ButtonGroup
               variant="contained"
               ref={anchorRef}
@@ -263,25 +242,22 @@ function AddContentPage(props) {
                   <Paper>
                     <ClickAwayListener onClickAway={handleClose}>
                       <MenuList id="split-button-menu" autoFocusItem>
-                        {options.map((option, index) => (
-                          <MenuItem
-                            key={option}
-                            disabled={index === 2}
-                            selected={index === selectedIndex}
-                            onClick={(event) =>
-                              handleMenuItemClick(event, index)
-                            }
-                          >
-                            {option}
-                          </MenuItem>
-                        ))}
+                        <MenuItem
+                          onClick={() => navigate("/updateinfo/" + user.id)}
+                          key={options[0]}
+                        >
+                          {options[0]}
+                        </MenuItem>
+                        <MenuItem onClick={() => signout()} key={options[1]}>
+                          {options[1]}{" "}
+                        </MenuItem>
                       </MenuList>
                     </ClickAwayListener>
                   </Paper>
                 </Grow>
               )}
             </Popper>
-          </React.Fragment>
+          </>
         </Toolbar>
       </AppBar>
       <Box
@@ -332,45 +308,10 @@ function AddContentPage(props) {
         }}
       >
         <Toolbar />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        {/* children component here */}
+        {children}
       </Box>
     </Box>
   );
-
-  AddContentPage.propTypes = {
-    /**
-     * Injected by the documentation to work in an iframe.
-     * You won't need it on your project.
-     */
-    window: PropTypes.func,
-  };
 }
-export default AddContentPage;
+export default AdminLayout;

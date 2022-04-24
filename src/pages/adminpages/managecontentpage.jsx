@@ -44,8 +44,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import ReactTableContainer from "react-table-container";
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 let styles = (theme) => ({
   root: {
     display: "inline-block",
@@ -120,7 +120,7 @@ function ManageContentPage(props) {
   const drawer = (
     <div>
       <Toolbar>
-        <div class="ml-1 mb-1">
+        <div className="ml-1 mb-1">
           <Link to={"/"} className="icon">
             <Icon width="160" height="70"></Icon>
           </Link>
@@ -133,7 +133,7 @@ function ManageContentPage(props) {
           { label: "เนื้อหา", to: "/managecontent" },
           { label: "สมาชิก", to: "/manageusers" },
         ].map((text, index) => (
-          <Link to={text.to}>
+          <Link key={index} to={text.to}>
             <ListItem
               button
               key={text}
@@ -168,7 +168,7 @@ function ManageContentPage(props) {
           }}
           variant="contained"
         >
-          <h>+ register</h>
+          <h2>+ register</h2>
         </Button>
       </center>
 
@@ -200,176 +200,6 @@ function ManageContentPage(props) {
 
   return (
     <Box sx={{ display: "flex", backgroundColor: "#F6F6F6", height: "100vh" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar
-          variant="temporary"
-          sx={{ minHeight: 64, height: "8vh" }}
-          style={{
-            backgroundColor: "#FFFFFF",
-            boxShadow: "0px 0px 10px 10px #F6F6F6 ",
-            borderWidth: 0,
-          }}
-        >
-          <Box
-            component="form"
-            sx={{
-              p: "2px 4px",
-              mt: "4vh",
-              display: "flex",
-              alignItems: "center",
-              width: 400,
-              mb: "4vh",
-              borderWidth: 3,
-              borderColor: "#CDCFD4",
-              borderRadius: 7,
-            }}
-          >
-            <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-            <InputBase
-              sx={{ ml: 1, flex: 1, color: "#4F5867" }}
-              placeholder="ค้นหา"
-              inputProps={{ "aria-label": "search google maps" }}
-            />
-          </Box>
-
-          <IconButton
-            sx={{ ml: "40vw", mb: "4vh", mt: "4vh" }}
-            aria-label="Notification"
-          >
-            <NotificationsRoundedIcon />
-          </IconButton>
-
-          <Button
-            variant="outlined"
-            sx={{ mb: "4vh", mt: "4vh" }}
-            style={{ marginLeft: 15, borderWidth: 0, color: "#F05A28" }}
-            aria-label="Profile"
-            startIcon={
-              <AccountCircleRoundedIcon style={{ color: "#4F5867" }} />
-            }
-          >
-            Username
-          </Button>
-
-          {/* <IconButton sx={{ mr:'8vw',mb:'4vh' }} aria-label="Profile">
-        <AccountCircleRoundedIcon />
-      </IconButton> */}
-
-          <React.Fragment>
-            <ButtonGroup
-              variant="contained"
-              ref={anchorRef}
-              aria-label="split button"
-              sx={{ mb: "4vh", mt: "4vh" }}
-              style={{ borderWidth: 0, boxShadow: "none" }}
-            >
-              <Button
-                size="small"
-                aria-controls={open ? "split-button-menu" : undefined}
-                aria-expanded={open ? "true" : undefined}
-                aria-label="select merge strategy"
-                aria-haspopup="menu"
-                onClick={handleToggle}
-                style={{
-                  backgroundColor: "#FFFFFF",
-                  color: "#94979E",
-                  borderRadius: 0,
-                  borderWidth: 0,
-                  boxShadow: "none",
-                  height: 30,
-                }}
-                elevation={0}
-              >
-                <KeyboardArrowDownIcon />
-              </Button>
-            </ButtonGroup>
-            <Popper
-              open={open}
-              anchorEl={anchorRef.current}
-              role={undefined}
-              transition
-              disablePortal
-            >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  style={{
-                    transformOrigin:
-                      placement === "bottom" ? "center top" : "center bottom",
-                  }}
-                >
-                  <Paper>
-                    <ClickAwayListener onClickAway={handleClose}>
-                      <MenuList id="split-button-menu" autoFocusItem>
-                        {options.map((option, index) => (
-                          <MenuItem
-                            key={option}
-                            disabled={index === 2}
-                            selected={index === selectedIndex}
-                            onClick={(event) =>
-                              handleMenuItemClick(event, index)
-                            }
-                          >
-                            {option}
-                          </MenuItem>
-                        ))}
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
-          </React.Fragment>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
       <Box
         component="main"
         sx={{
@@ -378,10 +208,8 @@ function ManageContentPage(props) {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        <Toolbar></Toolbar>
-
-        <div class="flex items-stretch ... mt-3 ml-3">
-          <h
+        <div className="flex items-stretch ... mt-3 ml-3">
+          <p
             style={{
               fontStyle: "normal",
               fontWeight: 500,
@@ -390,7 +218,7 @@ function ManageContentPage(props) {
             }}
           >
             เนื้อหาทั้งหมด
-          </h>
+          </p>
 
           <Button
             style={{
@@ -402,14 +230,14 @@ function ManageContentPage(props) {
               boxShadow: " 0px 1px 1px rgba(123, 123, 123, 0.16)",
             }}
           >
-            <h style={{ fontWeight: 500, fontSize: 14, fontStyle: "normal" }}>
+            <h2 style={{ fontWeight: 500, fontSize: 14, fontStyle: "normal" }}>
               เพิ่มเนื้อหา
-            </h>
+            </h2>
           </Button>
         </div>
 
         <Box
-          class="bg-white mt-5 "
+          className="bg-white mt-5 "
           style={{ width: "80vw", height: "80vh", borderRadius: 10 }}
         >
           <ReactTableContainer
@@ -429,7 +257,7 @@ function ManageContentPage(props) {
               >
                 <TableRow>
                   <TableCell>
-                    <h
+                    <h2
                       style={{
                         marginLeft: "4vw",
                         fontWeight: 500,
@@ -438,10 +266,10 @@ function ManageContentPage(props) {
                       }}
                     >
                       หัวข้อ
-                    </h>
+                    </h2>
                   </TableCell>
                   <TableCell>
-                    <h
+                    <h2
                       style={{
                         fontWeight: 500,
                         fontSize: 18,
@@ -449,10 +277,10 @@ function ManageContentPage(props) {
                       }}
                     >
                       เวลา
-                    </h>
+                    </h2>
                   </TableCell>
                   <TableCell>
-                    <h
+                    <h2
                       style={{
                         fontWeight: 500,
                         fontSize: 18,
@@ -460,10 +288,10 @@ function ManageContentPage(props) {
                       }}
                     >
                       วันที่
-                    </h>
+                    </h2>
                   </TableCell>
                   <TableCell>
-                    <h
+                    <h2
                       style={{
                         fontWeight: 500,
                         fontSize: 18,
@@ -471,30 +299,34 @@ function ManageContentPage(props) {
                       }}
                     >
                       จำนวนไลค์
-                    </h>
+                    </h2>
                   </TableCell>
                   <TableCell>
-                    <h
+                    <h2
                       style={{
                         fontWeight: 500,
                         fontSize: 18,
                         color: "#737B7B",
-                        marginLeft:"8vh"
+                        marginLeft: "8vh",
                       }}
                     >
                       ตัวเลือก
-                    </h>
+                    </h2>
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((n) => (
+                {data.map((n, i) => (
                   <TableRow key={n.id}>
                     <TableCell
-                      style={{ borderColor: "#F4F4F4", color: "#737B7B",width:'20vw' }}
+                      style={{
+                        borderColor: "#F4F4F4",
+                        color: "#737B7B",
+                        width: "20vw",
+                      }}
                     >
                       {" "}
-                      <h style={{ marginLeft: "2.75vw" }}>{n.หัวข้อ}</h>
+                      <h2 style={{ marginLeft: "2.75vw" }}>{n.หัวข้อ}</h2>
                     </TableCell>
                     <TableCell
                       style={{ borderColor: "#F4F4F4", color: "#737B7B" }}
@@ -502,38 +334,67 @@ function ManageContentPage(props) {
                       {n.เวลา}
                     </TableCell>
                     <TableCell
-                      style={{ borderColor: "#F4F4F4", color: "#737B7B",width:'11vw' }}
+                      style={{
+                        borderColor: "#F4F4F4",
+                        color: "#737B7B",
+                        width: "11vw",
+                      }}
                     >
                       {n.วันที่}
                     </TableCell>
                     <TableCell
                       style={{ borderColor: "#F4F4F4", color: "#737B7B" }}
                     >
-                      <h style={{ marginLeft: "1.5vw" }}></h>
+                      <h2 style={{ marginLeft: "1.5vw" }}></h2>
                       {n.จำนวนไลค์}
                     </TableCell>
                     <TableCell
-                      style={{ borderColor: "#F4F4F4", color: "#737B7B" ,width:'20vw'}}
+                      style={{
+                        borderColor: "#F4F4F4",
+                        color: "#737B7B",
+                        width: "20vw",
+                      }}
                     >
                       <ListItemIcon>
-                      <IconButton
-                        type="submit"
-                        sx={{ p: "5px",marginTop:'1vh',marginLeft:'1vw'}}
-                      >
-                        <ModeEditOutlineOutlinedIcon  style={{color: "#F05A28",borderColor:"#F2F2F2",borderWidth:1,borderRadius:9,transform:"scale(1.5)",padding:'3.3' }} />
-                      </IconButton>
-                    </ListItemIcon>
+                        <IconButton
+                          type="submit"
+                          sx={{ p: "5px", marginTop: "1vh", marginLeft: "1vw" }}
+                        >
+                          <ModeEditOutlineOutlinedIcon
+                            style={{
+                              color: "#F05A28",
+                              borderColor: "#F2F2F2",
+                              borderWidth: 1,
+                              borderRadius: 9,
+                              transform: "scale(1.5)",
+                              padding: "3.3",
+                            }}
+                          />
+                        </IconButton>
+                      </ListItemIcon>
 
-                    <ListItemIcon>
-                      <IconButton
-                        type="submit"
-                        sx={{ p: "5px",marginTop:'1vh',marginLeft:'5.5vw'}}
-                      >
-                        <DeleteOutlinedIcon  style={{color: "#F26E6E",borderColor:"#F2F2F2",borderWidth:1,borderRadius:9,transform:"scale(1.5)",padding:'3.3' }} />
-                      </IconButton>
-                    </ListItemIcon>
+                      <ListItemIcon>
+                        <IconButton
+                          type="submit"
+                          sx={{
+                            p: "5px",
+                            marginTop: "1vh",
+                            marginLeft: "5.5vw",
+                          }}
+                        >
+                          <DeleteOutlinedIcon
+                            style={{
+                              color: "#F26E6E",
+                              borderColor: "#F2F2F2",
+                              borderWidth: 1,
+                              borderRadius: 9,
+                              transform: "scale(1.5)",
+                              padding: "3.3",
+                            }}
+                          />
+                        </IconButton>
+                      </ListItemIcon>
                     </TableCell>
-                    
                   </TableRow>
                 ))}
               </TableBody>
