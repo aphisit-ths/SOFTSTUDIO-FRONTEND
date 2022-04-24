@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Icon from "./icon";
 import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -37,6 +37,10 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import TextField from "@mui/material/TextField";
+import AddPhotoAlternateRoundedIcon from "@mui/icons-material/AddPhotoAlternateRounded";
+import { makeStyles } from "@material-ui/core/styles";
+import Axios from "axios";
 import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -44,49 +48,45 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import ReactTableContainer from "react-table-container";
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
-let styles = (theme) => ({
-  root: {
-    display: "inline-block",
-  },
-  table: {
-    backgroundColor: "#ffffff",
-  },
-});
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 
-let id = 0;
-function createData(หัวข้อ, เวลา, วันที่, จำนวนไลค์, ตัวเลือก) {
-  id += 1;
-  return { หัวข้อ, เวลา, วันที่, จำนวนไลค์, ตัวเลือก };
-}
+const useStyles = makeStyles(() => ({
+  textField: {
+    marginTop: "2vh",
+    marginLeft: "2vw",
+    width: "85%",
+    fontWeight: 500,
+    borderRadius: "10",
+    height: "200",
+    fontFamily: "Inter",
+  },
 
-let data = [
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-];
+  textFieldLarge: {
+    width: "100%",
+    height: "100%",
+    fontWeight: 500,
+    borderRadius: "10",
+    height: "200",
+    fontFamily: "Inter",
+  },
+
+  input: {
+    display: "none",
+  },
+}));
 
 const drawerWidth = 270;
 
 const options = ["Profile", "Log Out"];
 
 function AddContentPage(props) {
-  const { classes } = props;
+  const classes = useStyles();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [imageSelected, setImageSelected] = useState("");
+  const [imageFileName, setImageFileName] = useState("");
+  
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -197,6 +197,20 @@ function AddContentPage(props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
+  function uploadImage() {
+    console.log(imageSelected);
+    const formData = new FormData();
+    formData.append("file", imageSelected);
+    formData.append("upload_preset", "g7ppyzgx");
+
+    Axios.post(
+      "https://api.cloudinary.com/v1_1/dyleexsre/image/upload",
+      formData
+    ).then((Response) => {
+      console.log(Response);
+    });
+  }
 
   return (
     <Box sx={{ display: "flex", backgroundColor: "#F6F6F6", height: "90vh" }}>
@@ -378,7 +392,6 @@ function AddContentPage(props) {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-
         <div class="flex items-stretch ... ml-3">
           <h
             style={{
@@ -391,36 +404,161 @@ function AddContentPage(props) {
             เพิ่มเนื้อหาใหม่
           </h>
 
-          <Button
-            style={{marginLeft: "60vw"}}>
-              <h style={{color:"#A9A5A5"}}>
-              ย้อนกลับ
-              </h>
+          <Button style={{ marginLeft: "60vw" }}>
+            <h style={{ color: "#A9A5A5" }}>ย้อนกลับ</h>
           </Button>
 
-          <Link to={"/addcontent"} >
-          <Button
-            style={{
-              marginLeft: "1vw",
-              backgroundColor: "#56C456",
-              color: "#FFF",
-              borderRadius: 6,
-              width: "7vw",
-              boxShadow: " 0px 1px 1px rgba(123, 123, 123, 0.16)",
-            }}
-          >
-            <h style={{ fontWeight: 500, fontSize: 14, fontStyle: "normal" }}>
-              เผยแพร่เนื้อหา
-            </h>
-          </Button>
-          </Link>
+          
+            <Button
+              style={{
+                marginLeft: "1vw",
+                backgroundColor: "#56C456",
+                color: "#FFF",
+                borderRadius: 6,
+                width: "7vw",
+                boxShadow: " 0px 1px 1px rgba(123, 123, 123, 0.16)",
+              }}
+              onClick={uploadImage}
+            >
+              <h style={{ fontWeight: 500, fontSize: 14, fontStyle: "normal" }}>
+                เผยแพร่เนื้อหา
+              </h>
+            </Button>
         </div>
 
         <Box
           class="bg-white mt-5 "
-          style={{ width: "80vw", height: "75vh", borderRadius: 10 }}
+          style={{ width: "80vw", height: "20vh", borderRadius: 10 }}
         >
-          
+          <TextField
+            required
+            id="outlined-required"
+            label="เพิ่มหัวเรื่อง"
+            className={classes.textField}
+            sx={{
+              "& label": {
+                color: "#000000",
+                fontWeight: 1000,
+                fontSize: 20,
+                fontFamily: "Inter",
+              },
+              marginTop: "2vh",
+              marginLeft: "2vw",
+            }}
+            inputProps={{
+              style: { color: "#000000", fontWeight: 1000, fontSize: 20 },
+            }}
+          ></TextField>
+
+          <TextField
+            required
+            id="outlined-required"
+            label="หมวดหมู่ : เช่น เที่ยววัด , เที่ยวเชียงไหม่ , เที่ยวไกล้กทม (ใช้การ split(“, หรือ อะไรก็ได้”))"
+            className={classes.textField}
+            sx={{
+              "& label": {
+                color: "#303032",
+                fontWeight: 500,
+                fontSize: 16,
+                fontFamily: "Inter",
+              },
+              marginTop: "2vh",
+              marginLeft: "2vw",
+            }}
+            inputProps={{
+              style: { color: "#303032", fontWeight: 500, fontSize: 16 },
+            }}
+          ></TextField>
+        </Box>
+
+        <Box
+          class="bg-white mt-5 "
+          style={{ width: "80vw", height: "57vh", borderRadius: 10 }}
+        >
+          <div class="flex items-stretch ... ml-3">
+            <div>
+              <Box
+                class="bg-white mt-5 ml-5 "
+                style={{
+                  width: "35vw",
+                  height: "45vh",
+                  borderRadius: 14,
+                  borderWidth: 1,
+                  border: "1px dashed #B1B1B1",
+                }}
+              >
+                <div
+                  className="imgiconuplod"
+                  style={{ marginTop: "15vh", marginLeft: "14.5vw" }}
+                >
+                  <div class="image-upload">
+                    <label for="file-input">
+                      <img
+                        style={{ width: "5vw", height: "10vh" }}
+                        src="https://www.img.in.th/images/b143ba1e67a64ce11004cafd58e24a8c.png"
+                      />
+                    </label>
+
+                    <input
+                      style={{ display: "none" }}
+                      id="file-input"
+                      type="file"
+                      onChange={(event) => {
+                        setImageSelected(event.target.files[0]);
+                        // setImageFileName(event.target.files[])
+                      }}
+                    />
+
+                  <div class="content-center">
+                  <h style={{ fontSize: 20, fontWeight: 400 }}>
+                    { imageSelected.name }
+                  </h>
+                </div>
+                  </div>
+                </div>
+
+              </Box>
+
+              <TextField
+                id="outlined-required"
+                label="ที่ตั้ง :"
+                className={classes.textField}
+                sx={{
+                  "& label": {
+                    color: "#303032",
+                    fontWeight: 500,
+                    fontSize: 16,
+                    fontFamily: "Inter",
+                  },
+                  marginTop: "2vh",
+                  marginLeft: "1vw",
+                  width: "97%",
+                }}
+                inputProps={{
+                  style: { color: "#303032", fontWeight: 500, fontSize: 16 },
+                }}
+              ></TextField>
+            </div>
+
+            <Box
+              class="bg-white mt-5 ml-10 "
+              style={{
+                width: "40vw",
+                height: "53vh",
+                borderRadius: 10,
+                borderWidth: 0,
+              }}
+            >
+              <TextField
+                className={classes.textFieldLarge}
+                id="outlined-multiline-static"
+                label="เพิ่มคำอธิบาย"
+                multiline
+                rows={23}
+                defaultValue=""
+              />
+            </Box>
+          </div>
         </Box>
       </Box>
     </Box>
