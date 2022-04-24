@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Icon from "./icon";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
@@ -51,6 +51,10 @@ import ReactTableContainer from "react-table-container";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 
+function BlogPost() {
+    let {id} = useParams();
+  }
+
 const useStyles = makeStyles(() => ({
   textField: {
     marginTop: "2vh",
@@ -80,7 +84,7 @@ const drawerWidth = 270;
 
 const options = ["Profile", "Log Out"];
 
-function AddContentPage(props) {
+function EditContentPage(props) {
   const classes = useStyles();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -401,13 +405,15 @@ function AddContentPage(props) {
               color: "#303032",
             }}
           >
-            เพิ่มเนื้อหาใหม่
+            แก้ไขเนื้อหา
           </h>
+        
           <Link to={"/managecontent"}>
           <Button style={{ marginLeft: "60vw" }}>
             <h style={{ color: "#A9A5A5" }}>ย้อนกลับ</h>
           </Button>
           </Link>
+
           
             <Button
               style={{
@@ -421,7 +427,7 @@ function AddContentPage(props) {
               onClick={uploadImage}
             >
               <h style={{ fontWeight: 500, fontSize: 14, fontStyle: "normal" }}>
-                เผยแพร่เนื้อหา
+                บันทึกการแก้ไข
               </h>
             </Button>
         </div>
@@ -564,7 +570,7 @@ function AddContentPage(props) {
     </Box>
   );
 
-  AddContentPage.propTypes = {
+  EditContentPage.propTypes = {
     /**
      * Injected by the documentation to work in an iframe.
      * You won't need it on your project.
@@ -572,4 +578,4 @@ function AddContentPage(props) {
     window: PropTypes.func,
   };
 }
-export default AddContentPage;
+export default EditContentPage;

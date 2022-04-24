@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+} from "react-router-dom";
 import Icon from "./icon";
-import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
@@ -44,8 +50,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import ReactTableContainer from "react-table-container";
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 let styles = (theme) => ({
   root: {
     display: "inline-block",
@@ -56,45 +62,45 @@ let styles = (theme) => ({
 });
 
 let id = 0;
-function createData(หัวข้อ, เวลา, วันที่, จำนวนไลค์, ตัวเลือก) {
+function createData(หัวข้อ, เวลา, วันที่, จำนวนไลค์,idx, ตัวเลือก) {
   id += 1;
-  return { หัวข้อ, เวลา, วันที่, จำนวนไลค์, ตัวเลือก };
+  return { หัวข้อ, เวลา, วันที่, จำนวนไลค์,idx,ตัวเลือก };
 }
 
 let data = [
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"0"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"1"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"2"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"3"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"4"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"5"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"6"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"7"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"8"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"9"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"10"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"11"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"12"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"13"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"14"),
 ];
 
 const drawerWidth = 270;
 
 const options = ["Profile", "Log Out"];
 
+
 function ManageContentPage(props) {
+
+
   const { classes } = props;
   const { window } = props;
+  // const { classes } = this.props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-
-  const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
-  };
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -391,21 +397,21 @@ function ManageContentPage(props) {
           >
             เนื้อหาทั้งหมด
           </h>
-          <Link to={"/addcontent"} >
-          <Button
-            style={{
-              marginLeft: "65vw",
-              backgroundColor: "#F05A28",
-              color: "#FFF",
-              borderRadius: 6,
-              width: "7vw",
-              boxShadow: " 0px 1px 1px rgba(123, 123, 123, 0.16)",
-            }}
-          >
-            <h style={{ fontWeight: 500, fontSize: 14, fontStyle: "normal" }}>
-              เพิ่มเนื้อหา
-            </h>
-          </Button>
+          <Link to={"/addcontent"}>
+            <Button
+              style={{
+                marginLeft: "65vw",
+                backgroundColor: "#F05A28",
+                color: "#FFF",
+                borderRadius: 6,
+                width: "7vw",
+                boxShadow: " 0px 1px 1px rgba(123, 123, 123, 0.16)",
+              }}
+            >
+              <h style={{ fontWeight: 500, fontSize: 14, fontStyle: "normal" }}>
+                เพิ่มเนื้อหา
+              </h>
+            </Button>
           </Link>
         </div>
 
@@ -480,7 +486,7 @@ function ManageContentPage(props) {
                         fontWeight: 500,
                         fontSize: 18,
                         color: "#737B7B",
-                        marginLeft:"8vh"
+                        marginLeft: "8vh",
                       }}
                     >
                       ตัวเลือก
@@ -492,7 +498,11 @@ function ManageContentPage(props) {
                 {data.map((n) => (
                   <TableRow key={n.id}>
                     <TableCell
-                      style={{ borderColor: "#F4F4F4", color: "#737B7B",width:'20vw' }}
+                      style={{
+                        borderColor: "#F4F4F4",
+                        color: "#737B7B",
+                        width: "20vw",
+                      }}
                     >
                       {" "}
                       <h style={{ marginLeft: "2.75vw" }}>{n.หัวข้อ}</h>
@@ -503,7 +513,11 @@ function ManageContentPage(props) {
                       {n.เวลา}
                     </TableCell>
                     <TableCell
-                      style={{ borderColor: "#F4F4F4", color: "#737B7B",width:'11vw' }}
+                      style={{
+                        borderColor: "#F4F4F4",
+                        color: "#737B7B",
+                        width: "11vw",
+                      }}
                     >
                       {n.วันที่}
                     </TableCell>
@@ -514,27 +528,65 @@ function ManageContentPage(props) {
                       {n.จำนวนไลค์}
                     </TableCell>
                     <TableCell
-                      style={{ borderColor: "#F4F4F4", color: "#737B7B" ,width:'20vw'}}
+                      style={{
+                        borderColor: "#F4F4F4",
+                        color: "#737B7B",
+                        width: "20vw",
+                      }}
                     >
-                      <ListItemIcon>
-                      <IconButton
-                        type="submit"
-                        sx={{ p: "5px",marginTop:'1vh',marginLeft:'1vw'}}
-                      >
-                        <ModeEditOutlineOutlinedIcon  style={{color: "#F05A28",borderColor:"#F2F2F2",borderWidth:1,borderRadius:9,transform:"scale(1.5)",padding:'3.3' }} />
-                      </IconButton>
-                    </ListItemIcon>
-
-                    <ListItemIcon>
-                      <IconButton
-                        type="submit"
-                        sx={{ p: "5px",marginTop:'1vh',marginLeft:'5.5vw'}}
-                      >
-                        <DeleteOutlinedIcon  style={{color: "#F26E6E",borderColor:"#F2F2F2",borderWidth:1,borderRadius:9,transform:"scale(1.5)",padding:'3.3' }} />
-                      </IconButton>
-                    </ListItemIcon>
-                    </TableCell>
+                  
                     
+                      <ListItem 
+                       key={n.idx}
+                      >
+                      <Link to={"/editcontent/" + n.idx}>
+                        <ListItemIcon>
+                          <IconButton
+                            type="submit"
+                            sx={{
+                              p: "5px",
+                              marginTop: "1vh",
+                              marginLeft: "1vw",
+                            }}
+                          >
+                            <ModeEditOutlineOutlinedIcon
+                              style={{
+                                color: "#F05A28",
+                                borderColor: "#F2F2F2",
+                                borderWidth: 1,
+                                borderRadius: 9,
+                                transform: "scale(1.5)",
+                                padding: "3.3",
+                              }}
+                            />
+                          </IconButton>
+                        </ListItemIcon>
+                      </Link>
+                        <ListItemIcon>
+                          <IconButton
+                            type="submit"
+                            sx={{
+                              p: "5px",
+                              marginTop: "1vh",
+                              marginLeft: "5.5vw",
+                            }}
+                          >
+                            <DeleteOutlinedIcon
+                              style={{
+                                color: "#F26E6E",
+                                borderColor: "#F2F2F2",
+                                borderWidth: 1,
+                                borderRadius: 9,
+                                transform: "scale(1.5)",
+                                padding: "3.3",
+                              }}
+                            />
+                          </IconButton>
+                        </ListItemIcon>
+                      </ListItem>
+                    
+                  
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
