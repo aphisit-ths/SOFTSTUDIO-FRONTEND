@@ -1,13 +1,12 @@
 secret = thisdatanotfuckingsecretdog
-==>
 => change user to admin
-=> pack token to headers
-
-admin table
 
 delete user by admin ===> 
 update user by admin ===>
 
 delete post by admin ===>
-delete comment
+
+add post ==> 
+edit post ==> 
+
 
