@@ -16,6 +16,7 @@ import ReactTableContainer from "react-table-container";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
 import UsersTable from "../../components/admin/users/usersTable";
@@ -84,6 +85,11 @@ function ManageUsersPage() {
               borderRadius: 6,
               width: "7vw",
               boxShadow: " 0px 1px 1px rgba(123, 123, 123, 0.16)",
+            }}
+            onClick={() => {
+              usernameInput.current.value = "";
+              passwordInput.current.value = "";
+              emailInput.current.value = "";
             }}
           >
             <h2 style={{ fontWeight: 500, fontSize: 14, fontStyle: "normal" }}>

@@ -2,7 +2,14 @@ import React, { useMemo, useContext } from "react";
 import ReactDOM from "react-dom";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./context/ApolloClient";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./index.css";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useParams,
+  Switch,
+} from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";

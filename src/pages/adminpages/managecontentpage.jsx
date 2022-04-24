@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+} from "react-router-dom";
 import Icon from "./icon";
-import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
@@ -56,45 +62,45 @@ let styles = (theme) => ({
 });
 
 let id = 0;
-function createData(หัวข้อ, เวลา, วันที่, จำนวนไลค์, ตัวเลือก) {
+function createData(หัวข้อ, เวลา, วันที่, จำนวนไลค์,idx, ตัวเลือก) {
   id += 1;
-  return { หัวข้อ, เวลา, วันที่, จำนวนไลค์, ตัวเลือก };
+  return { หัวข้อ, เวลา, วันที่, จำนวนไลค์,idx,ตัวเลือก };
 }
 
 let data = [
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
-  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"0"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"1"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"2"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"3"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"4"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"5"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"6"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"7"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"8"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"9"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"10"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"11"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"12"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"13"),
+  createData("วัดพระศรีรัตนมหาธาตุฯ (วัดใหญ่)", "09:00", "28 May 2021", 200,"14"),
 ];
 
 const drawerWidth = 270;
 
 const options = ["Profile", "Log Out"];
 
+
 function ManageContentPage(props) {
+
+
   const { classes } = props;
   const { window } = props;
+  // const { classes } = this.props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-
-  const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
-  };
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
