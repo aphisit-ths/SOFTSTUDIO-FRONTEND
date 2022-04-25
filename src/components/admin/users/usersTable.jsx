@@ -23,7 +23,35 @@ export default function UsersTable({ users }) {
     { title: "ชื่อ", field: "name", editable: "never" },
     { title: "นามสกุล", field: "lastName", editable: "never" },
     { title: "อีเมล", field: "email", editable: "onUpdate" },
-    { title: "สถานะ", field: "status", editable: "onUpdate" },
+    {
+      title: "สถานะ",
+      field: "status",
+      lookup: {
+        Banned: "Banned",
+        Active: "Active",
+        AdminId: "AdminId",
+        Cancled: "Cancled",
+      },
+      render: (row) => (
+        <p
+          style={{
+            fontWeight: 600,
+            borderColor: "#F4F4F4",
+            color:
+              row.status === "Active"
+                ? "#56C456"
+                : row.status === "Banned"
+                ? "#FF3D3D"
+                : row.status === "AdminId"
+                ? "#8146FF"
+                : "#737B7B",
+          }}
+        >
+          {row.status}
+        </p>
+      ),
+      editable: "onUpdate",
+    },
   ];
 
   return (
@@ -57,13 +85,13 @@ export default function UsersTable({ users }) {
             rowStyle: {
               backgroundColor: "#ffff",
               margin: 12,
-              fontSize: "16em",
+              fontSize: "16px",
               fontWeight: "300",
             },
             headerStyle: {
               backgroundColor: "#f5f5f5",
               fontWeight: "500",
-              fontSize: "1.1em",
+              fontSize: "16px",
               color: "gray",
             },
             searchFieldStyle: {

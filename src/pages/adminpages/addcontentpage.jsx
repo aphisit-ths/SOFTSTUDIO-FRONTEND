@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Icon from "./icon";
 import { Link, useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@apollo/react-hooks";
+import gql from "graphql-tag";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
@@ -51,6 +54,30 @@ import ReactTableContainer from "react-table-container";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 
+const ADD_CONTENT = gql`
+  mutation create_content(
+    $title: String!
+    $description: String!
+    $location: String!
+    $imageUrl: String!
+    $tag: [String]!
+  ) {
+    create_content(
+      title: $title
+      description: $description
+      location: $location
+      imageURL: $imageUrl
+      tag: $tag
+    ) {
+      contentId
+      title
+      description
+      location
+      imageURL
+      tag
+    }
+  }
+`;
 const useStyles = makeStyles(() => ({
   textField: {
     marginTop: "2vh",
@@ -81,120 +108,27 @@ const drawerWidth = 270;
 const options = ["Profile", "Log Out"];
 
 function AddContentPage(props) {
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ mode: "onChange" });
+
   const classes = useStyles();
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
   const [imageSelected, setImageSelected] = useState("");
   const [imageFileName, setImageFileName] = useState("");
-
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
-
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setOpen(false);
-  };
-
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const drawer = (
-    <div>
-      <Toolbar>
-        <div class="ml-1 mb-1">
-          <Link to={"/"} className="icon">
-            <Icon width="160" height="70"></Icon>
-          </Link>
-        </div>
-      </Toolbar>
-      <Divider />
-      <List>
-        {[
-          { label: "Dashboard", to: "/overview" },
-          { label: "เนื้อหา", to: "/managecontent" },
-          { label: "สมาชิก", to: "/manageusers" },
-        ].map((text, index) => (
-          <Link to={text.to}>
-            <ListItem
-              button
-              key={text}
-              style={{ color: index === 1 ? "#F05A28" : "#000" }}
-            >
-              <ListItemIcon>
-                {index - 0 === 0 ? <GridViewRoundedIcon sx={{ ml: 1 }} /> : ""}
-
-                {index - 1 === 0 ? (
-                  <ArticleRoundedIcon
-                    sx={{ ml: 1 }}
-                    style={{ color: "#F05A28" }}
-                  />
-                ) : (
-                  ""
-                )}
-
-                {index - 2 === 0 ? <PersonRoundedIcon sx={{ ml: 1 }} /> : ""}
-              </ListItemIcon>
-              <ListItemText primary={text.label} />
-            </ListItem>
-          </Link>
-        ))}
-      </List>
-      <center className="mt-8">
-        <Button
-          style={{
-            borderRadius: 35,
-            backgroundColor: "#F05A28",
-            padding: "8px 19px",
-            fontSize: "15px",
-          }}
-          variant="contained"
-        >
-          <h>+ register</h>
-        </Button>
-      </center>
-
-      <center>
-        <Box
-          component="img"
-          sx={{
-            height: 126,
-            width: 250,
-            mt: "25vh",
-          }}
-          src="https://cdn3d.iconscout.com/3d/premium/thumb/man-working-on-laptop-2996955-2493509.png"
-        />
-      </center>
-
-      <Button
-        variant="outlined"
-        sx={{ ml: "2vw", mt: "6vh" }}
-        style={{ color: "#61677F", borderWidth: 0 }}
-        startIcon={<SettingsRoundedIcon style={{ color: "#AFB3BE" }} />}
-      >
-        ตั้งค่า
-      </Button>
-    </div>
-  );
-
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const [imgUrl, setImgUrl] = useState("");
+  const [create_content, { loading, error }] = useMutation(ADD_CONTENT, {
+    onCompleted: (data) => {
+      if (data) {
+        console.log("add content sucessfull ===>");
+      }
+    },
+  });
 
   function uploadImage() {
-    console.log(imageSelected);
     const formData = new FormData();
     formData.append("file", imageSelected);
     formData.append("upload_preset", "g7ppyzgx");
@@ -203,358 +137,230 @@ function AddContentPage(props) {
       "https://api.cloudinary.com/v1_1/dyleexsre/image/upload",
       formData
     ).then((Response) => {
-      console.log(Response);
+      setImgUrl(Response.data.url);
+      console.log("setted =>");
     });
   }
-
+  const onSubmit = async (info) => {
+    try {
+      const tags = info.tag.split(",");
+      const newInfo = await {
+        ...info,
+        imageUrl: imgUrl,
+        tag: tags,
+      };
+      await create_content({ variables: newInfo });
+      reset();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Box sx={{ display: "flex", backgroundColor: "#F6F6F6", height: "90vh" }}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar
-          variant="temporary"
-          sx={{ minHeight: 64, height: "8vh" }}
-          style={{
-            backgroundColor: "#FFFFFF",
-            boxShadow: "0px 0px 10px 10px #F6F6F6 ",
-            borderWidth: 0,
-          }}
-        >
-          <Box
-            component="form"
-            sx={{
-              p: "2px 4px",
-              mt: "4vh",
-              display: "flex",
-              alignItems: "center",
-              width: 400,
-              mb: "4vh",
-              borderWidth: 3,
-              borderColor: "#CDCFD4",
-              borderRadius: 7,
-            }}
-          >
-            <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-            <InputBase
-              sx={{ ml: 1, flex: 1, color: "#4F5867" }}
-              placeholder="ค้นหา"
-              inputProps={{ "aria-label": "search google maps" }}
-            />
-          </Box>
-
-          <IconButton
-            sx={{ ml: "40vw", mb: "4vh", mt: "4vh" }}
-            aria-label="Notification"
-          >
-            <NotificationsRoundedIcon />
-          </IconButton>
-
-          <Button
-            variant="outlined"
-            sx={{ mb: "4vh", mt: "4vh" }}
-            style={{ marginLeft: 15, borderWidth: 0, color: "#F05A28" }}
-            aria-label="Profile"
-            startIcon={
-              <AccountCircleRoundedIcon style={{ color: "#4F5867" }} />
-            }
-          >
-            Username
-          </Button>
-
-          {/* <IconButton sx={{ mr:'8vw',mb:'4vh' }} aria-label="Profile">
-        <AccountCircleRoundedIcon />
-      </IconButton> */}
-
-          <React.Fragment>
-            <ButtonGroup
-              variant="contained"
-              ref={anchorRef}
-              aria-label="split button"
-              sx={{ mb: "4vh", mt: "4vh" }}
-              style={{ borderWidth: 0, boxShadow: "none" }}
-            >
-              <Button
-                size="small"
-                aria-controls={open ? "split-button-menu" : undefined}
-                aria-expanded={open ? "true" : undefined}
-                aria-label="select merge strategy"
-                aria-haspopup="menu"
-                onClick={handleToggle}
-                style={{
-                  backgroundColor: "#FFFFFF",
-                  color: "#94979E",
-                  borderRadius: 0,
-                  borderWidth: 0,
-                  boxShadow: "none",
-                  height: 30,
-                }}
-                elevation={0}
-              >
-                <KeyboardArrowDownIcon />
-              </Button>
-            </ButtonGroup>
-            <Popper
-              open={open}
-              anchorEl={anchorRef.current}
-              role={undefined}
-              transition
-              disablePortal
-            >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  style={{
-                    transformOrigin:
-                      placement === "bottom" ? "center top" : "center bottom",
-                  }}
-                >
-                  <Paper>
-                    <ClickAwayListener onClickAway={handleClose}>
-                      <MenuList id="split-button-menu" autoFocusItem>
-                        {options.map((option, index) => (
-                          <MenuItem
-                            key={option}
-                            disabled={index === 2}
-                            selected={index === selectedIndex}
-                            onClick={(event) =>
-                              handleMenuItemClick(event, index)
-                            }
-                          >
-                            {option}
-                          </MenuItem>
-                        ))}
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
-          </React.Fragment>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
-      >
-        <div class="flex items-stretch ... ml-3">
-          <h
-            style={{
-              fontStyle: "normal",
-              fontWeight: 500,
-              fontSize: 24,
-              color: "#303032",
-            }}
-          >
-            เพิ่มเนื้อหาใหม่
-          </h>
-          <Link to={"/managecontent"}>
-            <Button style={{ marginLeft: "60vw" }}>
-              <h style={{ color: "#A9A5A5" }}>ย้อนกลับ</h>
-            </Button>
-          </Link>
-
-          <Button
-            style={{
-              marginLeft: "1vw",
-              backgroundColor: "#56C456",
-              color: "#FFF",
-              borderRadius: 6,
-              width: "7vw",
-              boxShadow: " 0px 1px 1px rgba(123, 123, 123, 0.16)",
-            }}
-            onClick={uploadImage}
-          >
-            <h style={{ fontWeight: 500, fontSize: 14, fontStyle: "normal" }}>
-              เผยแพร่เนื้อหา
-            </h>
-          </Button>
-        </div>
-
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Box
-          class="bg-white mt-5 "
-          style={{ width: "80vw", height: "20vh", borderRadius: 10 }}
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+          }}
         >
-          <TextField
-            required
-            id="outlined-required"
-            label="เพิ่มหัวเรื่อง"
-            className={classes.textField}
-            sx={{
-              "& label": {
-                color: "#000000",
-                fontWeight: 1000,
-                fontSize: 20,
-                fontFamily: "Inter",
-              },
-              marginTop: "2vh",
-              marginLeft: "2vw",
-            }}
-            inputProps={{
-              style: { color: "#000000", fontWeight: 1000, fontSize: 20 },
-            }}
-          ></TextField>
-
-          <TextField
-            required
-            id="outlined-required"
-            label="หมวดหมู่ : เช่น เที่ยววัด , เที่ยวเชียงไหม่ , เที่ยวไกล้กทม (ใช้การ split(“, หรือ อะไรก็ได้”))"
-            className={classes.textField}
-            sx={{
-              "& label": {
-                color: "#303032",
-                fontWeight: 500,
-                fontSize: 16,
-                fontFamily: "Inter",
-              },
-              marginTop: "2vh",
-              marginLeft: "2vw",
-            }}
-            inputProps={{
-              style: { color: "#303032", fontWeight: 500, fontSize: 16 },
-            }}
-          ></TextField>
-        </Box>
-
-        <Box
-          class="bg-white mt-5 "
-          style={{ width: "80vw", height: "57vh", borderRadius: 10 }}
-        >
-          <div class="flex items-stretch ... ml-3">
-            <div>
-              <Box
-                class="bg-white mt-5 ml-5 "
-                style={{
-                  width: "35vw",
-                  height: "45vh",
-                  borderRadius: 14,
-                  borderWidth: 1,
-                  border: "1px dashed #B1B1B1",
-                }}
-              >
-                <div
-                  className="imgiconuplod"
-                  style={{ marginTop: "15vh", marginLeft: "14.5vw" }}
-                >
-                  <div class="image-upload">
-                    <label for="file-input">
-                      <img
-                        style={{ width: "5vw", height: "10vh" }}
-                        src="https://www.img.in.th/images/b143ba1e67a64ce11004cafd58e24a8c.png"
-                      />
-                    </label>
-
-                    <input
-                      style={{ display: "none" }}
-                      id="file-input"
-                      type="file"
-                      onChange={(event) => {
-                        setImageSelected(event.target.files[0]);
-                        // setImageFileName(event.target.files[])
-                      }}
-                    />
-
-                    <div class="content-center">
-                      <h style={{ fontSize: 20, fontWeight: 400 }}>
-                        {imageSelected.name}
-                      </h>
-                    </div>
-                  </div>
-                </div>
-              </Box>
-
-              <TextField
-                id="outlined-required"
-                label="ที่ตั้ง :"
-                className={classes.textField}
-                sx={{
-                  "& label": {
-                    color: "#303032",
-                    fontWeight: 500,
-                    fontSize: 16,
-                    fontFamily: "Inter",
-                  },
-                  marginTop: "2vh",
-                  marginLeft: "1vw",
-                  width: "97%",
-                }}
-                inputProps={{
-                  style: { color: "#303032", fontWeight: 500, fontSize: 16 },
-                }}
-              ></TextField>
-            </div>
-
-            <Box
-              class="bg-white mt-5 ml-10 "
+          <div className="flex justify-between ... ml-3">
+            <h2
               style={{
-                width: "40vw",
-                height: "53vh",
-                borderRadius: 10,
-                borderWidth: 0,
+                fontStyle: "normal",
+                fontWeight: 500,
+                fontSize: 24,
+                color: "#303032",
               }}
             >
-              <TextField
-                className={classes.textFieldLarge}
-                id="outlined-multiline-static"
-                label="เพิ่มคำอธิบาย"
-                multiline
-                rows={23}
-                defaultValue=""
-              />
-            </Box>
+              เพิ่มเนื้อหาใหม่
+            </h2>
+            <div>
+              <Link to={"/admin/managecontent"}>
+                <Button style={{}}>
+                  <h2 style={{ color: "#A9A5A5" }}>ย้อนกลับ</h2>
+                </Button>
+              </Link>
+              <Button
+                style={{
+                  marginLeft: "1vw",
+                  backgroundColor: "#56C456",
+                  color: "#FFF",
+                  borderRadius: 6,
+                  width: "7vw",
+                  boxShadow: " 0px 1px 1px rgba(123, 123, 123, 0.16)",
+                }}
+                onClick={uploadImage}
+              >
+                <button
+                  type="submit"
+                  style={{ fontWeight: 500, fontSize: 14, fontStyle: "normal" }}
+                >
+                  เผยแพร่เนื้อหา
+                </button>
+              </Button>
+            </div>
           </div>
+
+          <Box
+            className="bg-white mt-5 "
+            style={{ width: "80vw", height: "20vh", borderRadius: 10 }}
+          >
+            <TextField
+              required
+              id="outlined-required"
+              label="เพิ่มหัวเรื่อง"
+              className={classes.textField}
+              {...register("title", {
+                required: true,
+                minLength: 3,
+                maxLength: 300,
+              })}
+              sx={{
+                "& label": {
+                  color: "#000000",
+                  fontWeight: 1000,
+                  fontSize: 20,
+                  fontFamily: "Inter",
+                },
+                marginTop: "2vh",
+                marginLeft: "2vw",
+              }}
+              inputProps={{
+                style: { color: "#000000", fontWeight: 1000, fontSize: 20 },
+              }}
+            ></TextField>
+
+            <TextField
+              required
+              id="outlined-required"
+              label="หมวดหมู่ : เช่น เที่ยววัด , เที่ยวเชียงไหม่ , เที่ยวไกล้ กทม. (ใช้ , แบ่ง)"
+              className={classes.textField}
+              {...register("tag", {
+                required: true,
+                minLength: 3,
+                maxLength: 200,
+              })}
+              sx={{
+                "& label": {
+                  color: "#303032",
+                  fontWeight: 300,
+                  fontSize: 16,
+                },
+                marginTop: "2vh",
+                marginLeft: "2vw",
+              }}
+              inputProps={{
+                style: { color: "#757575", fontWeight: 300, fontSize: 16 },
+              }}
+            ></TextField>
+          </Box>
+
+          <Box
+            className="bg-white mt-5 "
+            style={{ width: "80vw", height: "57vh", borderRadius: 10 }}
+          >
+            <div className="flex items-stretch ... ml-3">
+              <div>
+                <Box
+                  className="bg-white mt-5 ml-5 "
+                  style={{
+                    width: "35vw",
+                    height: "45vh",
+                    borderRadius: 14,
+                    borderWidth: 1,
+                    border: "1px dashed #B1B1B1",
+                  }}
+                >
+                  <div
+                    className="imgiconuplod"
+                    style={{ marginTop: "15vh", marginLeft: "14.5vw" }}
+                  >
+                    <div className="image-upload" style={{ cursor: "pointer" }}>
+                      <label htmlFor="file-input">
+                        <img
+                          alt="nothing"
+                          style={{ width: "100", height: "auto" }}
+                          src="https://www.img.in.th/images/b143ba1e67a64ce11004cafd58e24a8c.png"
+                        />
+                      </label>
+
+                      <input
+                        style={{ display: "none" }}
+                        id="file-input"
+                        type="file"
+                        onChange={(event) => {
+                          setImageSelected(event.target.files[0]);
+                          uploadImage();
+                          // setImageFileName(event.target.files[])
+                        }}
+                      />
+
+                      <div className="content-center">
+                        <h2 style={{ fontSize: 20, fontWeight: 400 }}>
+                          {imageSelected.name}
+                        </h2>
+                      </div>
+                    </div>
+                  </div>
+                </Box>
+
+                <TextField
+                  {...register("location", {
+                    required: true,
+                    minLength: 3,
+                    maxLength: 300,
+                  })}
+                  id="outlined-required"
+                  label="ที่ตั้ง :"
+                  className={classes.textField}
+                  sx={{
+                    "& label": {
+                      color: "#303032",
+                      fontWeight: 500,
+                      fontSize: 16,
+                      fontFamily: "Inter",
+                    },
+                    marginTop: "2vh",
+                    marginLeft: "1vw",
+                    width: "97%",
+                  }}
+                  inputProps={{
+                    style: { color: "#303032", fontWeight: 500, fontSize: 16 },
+                  }}
+                ></TextField>
+              </div>
+
+              <Box
+                className="bg-white mt-5 ml-10 "
+                style={{
+                  width: "40vw",
+                  height: "53vh",
+                  borderRadius: 10,
+                  borderWidth: 0,
+                }}
+              >
+                <TextField
+                  {...register("description", {
+                    required: true,
+                    minLength: 10,
+                    maxLength: 300,
+                  })}
+                  className={classes.textFieldLarge}
+                  id="outlined-multiline-static"
+                  label="เพิ่มคำอธิบาย"
+                  multiline
+                  rows={23}
+                  defaultValue=""
+                />
+              </Box>
+            </div>
+          </Box>
         </Box>
-      </Box>
+      </form>
     </Box>
   );
 

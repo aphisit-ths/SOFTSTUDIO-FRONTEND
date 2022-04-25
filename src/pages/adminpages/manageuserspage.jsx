@@ -16,7 +16,6 @@ import ReactTableContainer from "react-table-container";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
 import UsersTable from "../../components/admin/users/usersTable";
@@ -42,69 +41,67 @@ function ManageUsersPage() {
   if (loading) return <p>loading...</p>;
   if (error) return <p>error</p>;
   return (
-    <Box
-      component="main"
-      sx={{
-        flexGrow: 1,
-        p: 3,
-        width: { sm: `calc(100% - ${drawerWidth}px)` },
-      }}
-    >
-      <form className="flex items-center justify-between ... mt-3 ml-3">
-        <h2
-          style={{
-            fontStyle: "normal",
-            fontWeight: 500,
-            fontSize: 24,
-            color: "#303032",
-            marginTop: "1vh",
-          }}
-        >
-          สมาชิกทั้งหมด
-        </h2>
-        <div className="flex align-middle">
-          <TextField required id="outlined-required" label="username" />
-          <TextField
-            required
-            id="outlined-required"
-            label="password"
-            style={{ marginLeft: "1vw" }}
-          />
-          <TextField
-            required
-            id="outlined-required"
-            label="Email"
-            style={{ marginLeft: "1vw" }}
-          />
-
-          <Button
+    <Box sx={{ display: "flex", backgroundColor: "#F6F6F6", height: "100vh" }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}
+      >
+        <form className="flex items-center justify-between ... mt-3 ml-3">
+          <h2
             style={{
-              marginLeft: "1vw",
-              backgroundColor: "#F05A28",
-              color: "#FFF",
-              borderRadius: 6,
-              width: "7vw",
-              boxShadow: " 0px 1px 1px rgba(123, 123, 123, 0.16)",
-            }}
-            onClick={() => {
-              usernameInput.current.value = "";
-              passwordInput.current.value = "";
-              emailInput.current.value = "";
+              fontStyle: "normal",
+              fontWeight: 500,
+              fontSize: 24,
+              color: "#303032",
+              marginTop: "1vh",
             }}
           >
-            <h2 style={{ fontWeight: 500, fontSize: 14, fontStyle: "normal" }}>
-              เพิ่มสมาชิก
-            </h2>
-          </Button>
-        </div>
-      </form>
+            สมาชิกทั้งหมด
+          </h2>
+          <div className="flex align-middle">
+            <TextField required id="outlined-required" label="username" />
+            <TextField
+              required
+              id="outlined-required"
+              label="password"
+              style={{ marginLeft: "1vw" }}
+            />
+            <TextField
+              required
+              id="outlined-required"
+              label="Email"
+              style={{ marginLeft: "1vw" }}
+            />
 
-      <Box
-        className="bg-white mt-5 "
-        style={{ width: "80vw", height: "80vh", borderRadius: 10 }}
-      >
-        <UsersTable users={data.users}></UsersTable>
-        {/* <ReactTableContainer
+            <Button
+              style={{
+                marginLeft: "1vw",
+                backgroundColor: "#F05A28",
+                color: "#FFF",
+                borderRadius: 6,
+                width: "7vw",
+                boxShadow: " 0px 1px 1px rgba(123, 123, 123, 0.16)",
+              }}
+            >
+              <h2
+                style={{ fontWeight: 500, fontSize: 14, fontStyle: "normal" }}
+              >
+                เพิ่มสมาชิก
+              </h2>
+            </Button>
+          </div>
+        </form>
+
+        <Box
+          className="bg-white mt-5 "
+          style={{ width: "80vw", height: "80vh", borderRadius: 10 }}
+        >
+          <UsersTable users={data.users}></UsersTable>
+          {/* <ReactTableContainer
           style={{
             // Removes `inline-block` space between <Paper> and <ReactTableContainer>
             marginBottom: "-4px",
@@ -299,6 +296,7 @@ function ManageUsersPage() {
             </TableBody>
           </Table>
         </ReactTableContainer> */}
+        </Box>
       </Box>
     </Box>
   );
