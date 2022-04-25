@@ -3,8 +3,11 @@ import MaterialTable from "material-table";
 import { MuiThemeProvider } from "@material-ui/core";
 import { createTheme } from "@material-ui/core";
 import { tableIcons, tableRef } from "../../../pages/adminpages/ref";
+import Search from "@material-ui/icons/Search";
 import axios from "axios";
-export default function UsersTable({ users }) {
+import { useNavigate } from "react-router-dom";
+export default function ContentTable({ contents }) {
+  const navigate = useNavigate();
   const theme = createTheme({
     palette: {
       primary: {
@@ -15,43 +18,18 @@ export default function UsersTable({ users }) {
       },
     },
   });
-  const rows = users.map((obj) => ({
+  const rows = contents.map((obj) => ({
     ...obj,
   }));
   const columns = [
-    { title: "Id", field: "userId", editable: "never" },
-    { title: "ชื่อผู้ใช้", field: "userName", editable: "never" },
-    { title: "ชื่อ", field: "name", editable: "never" },
-    { title: "นามสกุล", field: "lastName", editable: "never" },
-    { title: "อีเมล", field: "email", editable: "never" },
+    { title: "Id", field: "contentId", editable: "never" },
+    { title: "หัวเรื่อง", field: "title", editable: "never" },
+    { title: "ที่ตั้ง", field: "location", editable: "never" },
+    { title: "tag", field: "tag", editable: "never" },
     {
       title: "สถานะ",
-      field: "status",
-      lookup: {
-        Banned: "Banned",
-        Active: "Active",
-        AdminId: "AdminId",
-        Cancled: "Cancled",
-      },
-      render: (row) => (
-        <p
-          style={{
-            fontWeight: 600,
-            borderColor: "#F4F4F4",
-            color:
-              row.status === "Active"
-                ? "#56C456"
-                : row.status === "Banned"
-                ? "#FF3D3D"
-                : row.status === "AdminId"
-                ? "#8146FF"
-                : "#737B7B",
-          }}
-        >
-          {row.status}
-        </p>
-      ),
-      editable: "onUpdate",
+      field: "contentStatus",
+      editable: "nerver",
     },
   ];
 
@@ -64,15 +42,28 @@ export default function UsersTable({ users }) {
           columns={columns}
           tableRef={tableRef}
           icons={tableIcons}
+          actions={[
+            {
+              icon: "i",
+              tooltip: "go to post",
+              onClick: (event, rowData) =>
+                navigate("/content/" + rowData.contentId),
+            },
+          ]}
           editable={{
-            onRowUpdate: (newData, oldData) =>
+            onRowDelete: (oldData) =>
               new Promise((resolve, reject) => {
+                const id = oldData.contentId;
                 setTimeout(() => {
-                  const id = oldData.userId;
-                  const status = newData.status;
                   try {
-                    const res = axios.put(
-                      `https://localhost:5001/api/User/activate_user?userId=${id}&status=${status}`
+                    const res = axios.delete(
+                      "https://localhost:5001/api/Contents/DeleteContent",
+                      {
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        data: id,
+                      }
                     );
                     console.log(res);
                   } catch (err) {

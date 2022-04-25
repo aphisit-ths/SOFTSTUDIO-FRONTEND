@@ -136,9 +136,7 @@ function LoginPage() {
             )}
           </div>
         </div>
-        <button disabled={loading} type="submit">
-          เข้าสู่ระบบ
-        </button>
+        <button type="submit">เข้าสู่ระบบ</button>
         {error && (
           <p className="px-6 py-4 rounded-xl text-white  bg-red-500 ">
             {error.message}

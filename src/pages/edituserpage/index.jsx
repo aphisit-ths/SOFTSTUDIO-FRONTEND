@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { AuthContext } from "../../context/AuthProvider";
-
+import { Link } from "react-router-dom";
 function EditUserPage() {
   const {
     register,
@@ -152,6 +152,17 @@ function EditUserPage() {
           </p>
         )} */}
       </form>
+
+      {userInfo.status === "AdminId" && (
+        <Link
+          to={"addmin/overview"}
+          onClick={signout}
+          className="text-purple-500 font-bold "
+        >
+          admin +
+        </Link>
+      )}
+
       <p onClick={signout} className="signout-btn">
         ออกจากระบบ
       </p>

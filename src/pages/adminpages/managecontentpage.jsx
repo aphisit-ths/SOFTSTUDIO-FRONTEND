@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -52,14 +52,34 @@ import TableRow from "@material-ui/core/TableRow";
 import ReactTableContainer from "react-table-container";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-let styles = (theme) => ({
-  root: {
-    display: "inline-block",
-  },
-  table: {
-    backgroundColor: "#ffffff",
-  },
-});
+import ContentTable from "../../components/admin/content/contentTable";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/react-hooks";
+const GET_CONTNETS = gql`
+  query GET_CONTNETS {
+    contents {
+      contentId
+      title
+      description
+      location
+      imageURL
+      tag
+      contentStatus
+      commentList {
+        commentId
+        user {
+          password
+          userId
+          userName
+          name
+        }
+        description
+        date
+        commentStatus
+      }
+    }
+  }
+`;
 
 let id = 0;
 function createData(หัวข้อ, เวลา, วันที่, จำนวนไลค์, idx, ตัวเลือก) {
@@ -179,117 +199,13 @@ const drawerWidth = 270;
 
 const options = ["Profile", "Log Out"];
 
-function ManageContentPage(props) {
-  const { classes } = props;
-  const { window } = props;
-  // const { classes } = this.props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+function ManageContentPage() {
+  const { data, loading, error } = useQuery(GET_CONTNETS, {
+    pollInterval: 2000,
+  });
 
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
-
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setOpen(false);
-  };
-
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const drawer = (
-    <div>
-      <Toolbar>
-        <div className="ml-1 mb-1">
-          <Link to={"/"} className="icon">
-            <Icon width="160" height="70"></Icon>
-          </Link>
-        </div>
-      </Toolbar>
-      <Divider />
-      <List>
-        {[
-          { label: "Dashboard", to: "/overview" },
-          { label: "เนื้อหา", to: "/managecontent" },
-          { label: "สมาชิก", to: "/manageusers" },
-        ].map((text, index) => (
-          <Link key={index} to={text.to}>
-            <ListItem
-              button
-              key={text}
-              style={{ color: index === 1 ? "#F05A28" : "#000" }}
-            >
-              <ListItemIcon>
-                {index - 0 === 0 ? <GridViewRoundedIcon sx={{ ml: 1 }} /> : ""}
-
-                {index - 1 === 0 ? (
-                  <ArticleRoundedIcon
-                    sx={{ ml: 1 }}
-                    style={{ color: "#F05A28" }}
-                  />
-                ) : (
-                  ""
-                )}
-
-                {index - 2 === 0 ? <PersonRoundedIcon sx={{ ml: 1 }} /> : ""}
-              </ListItemIcon>
-              <ListItemText primary={text.label} />
-            </ListItem>
-          </Link>
-        ))}
-      </List>
-      <center className="mt-8">
-        <Button
-          style={{
-            borderRadius: 35,
-            backgroundColor: "#F05A28",
-            padding: "8px 19px",
-            fontSize: "15px",
-          }}
-          variant="contained"
-        >
-          <h2>+ register</h2>
-        </Button>
-      </center>
-
-      <center>
-        <Box
-          component="img"
-          sx={{
-            height: 126,
-            width: 250,
-            mt: "25vh",
-          }}
-          src="https://cdn3d.iconscout.com/3d/premium/thumb/man-working-on-laptop-2996955-2493509.png"
-        />
-      </center>
-
-      <Button
-        variant="outlined"
-        sx={{ ml: "2vw", mt: "6vh" }}
-        style={{ color: "#61677F", borderWidth: 0 }}
-        startIcon={<SettingsRoundedIcon style={{ color: "#AFB3BE" }} />}
-      >
-        ตั้งค่า
-      </Button>
-    </div>
-  );
-
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  if (loading) return <p>loading</p>;
+  if (error) return <p>error : {console.log(error)}</p>;
 
   return (
     <Box sx={{ display: "flex", backgroundColor: "#F6F6F6", height: "100vh" }}>
@@ -331,8 +247,9 @@ function ManageContentPage(props) {
             </Link>
           </Button>
         </div>
+        {loading ? "loading" : <ContentTable contents={data.contents} />}
 
-        <Box
+        {/* <Box
           className="bg-white mt-5 "
           style={{ width: "80vw", height: "80vh", borderRadius: 10 }}
         >
@@ -496,7 +413,7 @@ function ManageContentPage(props) {
               </TableBody>
             </Table>
           </ReactTableContainer>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

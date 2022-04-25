@@ -14,7 +14,7 @@ function Comment({ comment, idx, contentId }) {
   const { user } = useContext(AuthContext);
   const commentUser = comment.user;
   const { commentId, description, date, commentStatus } = comment;
-  const isOwner = user.userName === commentUser.userName;
+
   let score = Math.floor(Math.random() * 100);
   const [DeleteComment, { loading, error }] = useMutation(DELETE_COMMENT, {
     refetchQueries: [GET_CONTENT_BY_ID, "GetContentById"],
@@ -38,7 +38,7 @@ function Comment({ comment, idx, contentId }) {
   function disSupportComment() {
     setSupportScore(supportScore - 1);
   }
-
+  if (loading) return <p>loading ...</p>;
   return (
     <motion.div
       initial={{ opacity: 0, x: -100 }}
@@ -59,13 +59,18 @@ function Comment({ comment, idx, contentId }) {
       <div className="info-section">
         <div className="info-header">
           <p className="owner-name">{commentUser.userName}</p>
-          {isOwner ? (
-            <p onClick={handleClick} className="response">
-              ลบคอมเม้น
-            </p>
-          ) : (
-            <a href="#comment">ตอบกลับ</a>
-          )}
+          {user ? (
+            <>
+              {" "}
+              {user.userName === commentUser.userName ? (
+                <p onClick={handleClick} className="response">
+                  ลบคอมเม้น
+                </p>
+              ) : (
+                <a href="#comment">ตอบกลับ</a>
+              )}
+            </>
+          ) : null}
         </div>
         <div className="info-body">
           <p className="detail">{description}</p>
