@@ -2,6 +2,11 @@
 
 > เว็ปแอพพลิเคชั่นสำหรับการท่องเที่ยวเชิงธรรมมะ เผยแพร่ทั้งสถานที่ต่างๆ ของการแสวงหาธรรม โดยมีเนื้อหาและ Interface ที่เข้าใจง่ายเหมาะกับวัยรุ่น
 
+## INSTALL
+1. npm install (ติดตั้ง packages)
+2. npm start (run server on localhost)
+
+
 ## CAUTIONS
 
 1. develop with reactjs for client side , asp.net (MVC) server side
@@ -25,3 +30,5 @@
 ## ASSOCIATE
 
 [BACKEND REPOSITORY](https://github.com/Cherpomm/SoftStudio-backend/tree/Por)
+
+[API GATEWAY](https://github.com/aphisit-ths/api-gateway-software-studio)
