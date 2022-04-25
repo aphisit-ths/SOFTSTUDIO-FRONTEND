@@ -2,6 +2,7 @@
 
 > เว็ปแอพพลิเคชั่นสำหรับการท่องเที่ยวเชิงธรรมมะ เผยแพร่ทั้งสถานที่ต่างๆ ของการแสวงหาธรรม โดยมีเนื้อหาและ Interface ที่เข้าใจง่ายเหมาะกับวัยรุ่น
 
+
 ## INSTALL
 1. npm install (ติดตั้ง packages)
 2. npm start (run server on localhost)
@@ -27,8 +28,18 @@
 
    > สำหรับการทำ Routing
 
+## Members 
+1. VORANIPIT CHAIPINITNORACHART
+2. SUPAKIT LOKAEW]
+3. RAPEEPAT PENGTEE
+4. PANTAWAT THANANUKUL 
+5. NIRMON OATSAWASAI
+6. APHISIT TUBSEANG 
+
 ## ASSOCIATE
 
 [BACKEND REPOSITORY](https://github.com/Cherpomm/SoftStudio-backend/tree/Por)
 
 [API GATEWAY](https://github.com/aphisit-ths/api-gateway-software-studio)
+
+[FRONTEND](https://github.com/aphisit-ths/SOFTSTUDIO-FRONTEND)
